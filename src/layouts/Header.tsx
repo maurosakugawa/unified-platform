@@ -13,8 +13,8 @@
  * @version 1.0.0
  * @license MIT License
  */
-
 import { Search } from "lucide-react";
+import ThemeToggle from "../components/ui/ThemeToggle";
 
 interface HeaderProps {
   title: string;
@@ -48,22 +48,31 @@ export function Header({
         </p>
       </div>
 
-      <div className="relative">
-        <Search
-          className="absolute left-3 top-3 text-gray-400"
-          size={18}
-        />
+      <div className="flex items-center gap-4">
+        <div className="relative">
+          <Search
+            className="
+              absolute
+              left-3
+              top-3
+              text-base-content/40
+            "
+            size={18}
+          />
 
-        <input
-          placeholder="Buscar..."
-          className="
-            input
-            input-bordered
-            rounded-xl
-            pl-10
-            w-72
-          "
-        />
+          <input
+            placeholder="Buscar..."
+            className="
+              input
+              input-bordered
+              rounded-xl
+              pl-10
+              w-72
+            "
+          />
+        </div>
+
+        <ThemeToggle />
       </div>
     </header>
   );

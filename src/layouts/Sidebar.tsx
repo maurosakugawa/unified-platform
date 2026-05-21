@@ -2,8 +2,8 @@
 /**
  * 
  * @author Mauro Sakugawa
- * Date: 2026-05-21
- * License: MIT License
+ * @created 2026-05-21
+ * @license MIT License
  * @version 1.0.0
  */
 
@@ -53,9 +53,9 @@ export function Sidebar() {
     <aside
       className="
         w-72
-        bg-white
+        bg-base-100
         border-r
-        border-gray-100
+        border-base-300
         p-6
         hidden
         md:flex

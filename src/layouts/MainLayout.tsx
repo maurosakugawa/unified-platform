@@ -41,7 +41,14 @@ export default function MainLayout({
           subtitle={subtitle}
         />
 
-        <main className="flex-1 overflow-y-auto p-8 bg-slate-50">
+        <main
+          className="
+            flex-1
+            overflow-y-auto
+            p-8
+            bg-base-200
+          "
+        >
           {children}
         </main>
       </div>
