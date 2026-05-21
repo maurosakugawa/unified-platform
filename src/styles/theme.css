@@ -1,0 +1,23 @@
+// src/styles/theme.css
+/**
+*
+**/
+/* Theme */
+:root {
+  --color-primary: #7c3aed;
+  --color-primary-light: #a78bfa;
+
+  --color-bg: #f5f3ff;
+  --color-card: #ffffff;
+
+  --color-text: #111827;
+  --color-muted: #6b7280;
+
+  --color-border: #e5e7eb;
+}
+
+body {
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: Inter, sans-serif;
+}

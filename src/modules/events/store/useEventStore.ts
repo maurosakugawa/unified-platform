@@ -1,11 +1,11 @@
-// src/modules/events/store/useEventStore.js
-/* * Event store for the events module
- * @author Mauro Sakugawa
- * @version 1.0.0
- * @license MIT
+// src/modules/events/store/useEventStore.ts
+/**
  * 
- * Created on 2024-06-01
- * */
+ * @author Mauro Sakugawa
+ * Date: 2026-05-21
+ * License: MIT License
+ * @version 1.0.0
+ */
 import { create } from 'zustand'
 
 export const useEventStore = create((set) => ({

@@ -1,12 +1,10 @@
-// src/modules/events/components/EventList.jsx
-/* *
- * Event list component for the events module
- * This component is responsible for rendering the list of events.
+// src/modules/events/components/EventList.tsx
+/**
+ * 
  * @author Mauro Sakugawa
+ * Date: 2026-05-21
+ * License: MIT License
  * @version 1.0.0
- * @license MIT
- *
- * Created on 2024-06-01
  */
 import { useEventStore } from '../store/useEventStore'
 
