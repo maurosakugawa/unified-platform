@@ -19,6 +19,7 @@ import EventList from "../components/EventList";
 import EventSearch from "../components/EventSearch";
 import EventFilters from "../components/EventFilters";
 import EventModal from "../components/EventModal";
+import EventSort from "../components/EventSort";
 
 import { useFilteredEvents } from "../hooks/useFilteredEvents";
 
@@ -34,11 +35,16 @@ export default function EventsPage() {
   const [priority, setPriority] =
     useState("");
 
+    
+  const [sortBy, setSortBy] =
+    useState("created"); 
+    
   const filteredEvents =
     useFilteredEvents({
       search,
       category,
       priority,
+      sortBy,
     });
 
   const openCreate = useEventModal(
@@ -102,6 +108,11 @@ export default function EventsPage() {
 
         {/* MODAL */}
         <EventModal />
+
+        <EventSort
+          value={sortBy}
+          onChange={setSortBy}
+        />        
       </div>
     </MainLayout>
   );
