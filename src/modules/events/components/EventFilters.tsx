@@ -1,46 +1,103 @@
-// src/modules/events/components/EventList.tsx
+// src/modules/events/components/EventFilters.tsx
+
 /**
- * 
+ * Filtros dos eventos
+ *
  * @author Mauro Sakugawa
- * Date: 2026-05-21
- * License: MIT License
+ * @created 2026-05-21
+ * @license MIT
  * @version 1.0.0
  */
-import { useEventStore } from '../store/useEventStore'
 
-export default function EventList() {
-  const events = useEventStore((state) => state.events)
-  const removeEvent = useEventStore((state) => state.removeEvent)
+import {
+  EVENT_CATEGORIES,
+  EVENT_PRIORITIES,
+} from "../types/event.types";
 
+interface Props {
+  category: string;
+
+  priority: string;
+
+  onCategoryChange: (
+    value: string
+  ) => void;
+
+  onPriorityChange: (
+    value: string
+  ) => void;
+}
+
+export default function EventFilters({
+  category,
+  priority,
+  onCategoryChange,
+  onPriorityChange,
+}: Props) {
   return (
-    <div className="space-y-4">
-      {events.map((event) => (
-        <div
-          key={event.id}
-          className="card bg-base-100 shadow-md p-4"
-        >
-          <div className="flex justify-between">
-            <div>
-              <h2 className="font-bold text-lg">
-                {event.title}
-              </h2>
+    <div
+      className="
+        flex
+        flex-col
+        lg:flex-row
+        gap-4
+      "
+    >
+      <select
+        value={category}
+        onChange={(e) =>
+          onCategoryChange(e.target.value)
+        }
+        className="
+          select
+          select-bordered
+          rounded-2xl
+          bg-white
+        "
+      >
+        <option value="">
+          Todas categorias
+        </option>
 
-              <p>{event.description}</p>
-
-              <p className="text-sm opacity-70">
-                {event.date} às {event.time}
-              </p>
-            </div>
-
-            <button
-              className="btn btn-error btn-sm"
-              onClick={() => removeEvent(event.id)}
+        {EVENT_CATEGORIES.map(
+          (category) => (
+            <option
+              key={category}
+              value={category}
             >
-              Excluir
-            </button>
-          </div>
-        </div>
-      ))}
+              {category}
+            </option>
+          )
+        )}
+      </select>
+
+      <select
+        value={priority}
+        onChange={(e) =>
+          onPriorityChange(e.target.value)
+        }
+        className="
+          select
+          select-bordered
+          rounded-2xl
+          bg-white
+        "
+      >
+        <option value="">
+          Todas prioridades
+        </option>
+
+        {EVENT_PRIORITIES.map(
+          (priority) => (
+            <option
+              key={priority}
+              value={priority}
+            >
+              {priority}
+            </option>
+          )
+        )}
+      </select>
     </div>
-  )
+  );
 }

@@ -1,22 +1,31 @@
 // src/modules/events/components/EventList.tsx
+
 /**
- * 
+ * Lista de eventos
+ *
  * @author Mauro Sakugawa
  * @created 2026-05-21
- * @license MIT License
+ * @license MIT
  * @version 1.0.0
  */
+
+import type {
+  Event,
+} from "../types/event.types";
+
 import { useEventStore } from "../store/useEventStore";
 
 import EventCard from "./EventCard";
 
 import EmptyState from "../../../components/ui/EmptyState";
 
-export default function EventList() {
-  const events = useEventStore(
-    (state) => state.events
-  );
+interface Props {
+  events: Event[];
+}
 
+export default function EventList({
+  events,
+}: Props) {
   const removeEvent = useEventStore(
     (state) => state.removeEvent
   );

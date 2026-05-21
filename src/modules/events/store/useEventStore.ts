@@ -26,28 +26,42 @@ interface EventStore {
   updateEvent: (event: Event) => void;
 }
 
-export const useEventStore =
-  create<EventStore>((set) => ({
-    events: [],
+const LOCAL_STORAGE_KEY = "smart-planner-events";
 
-    addEvent: (event) =>
-      set((state) => ({
-        events: [...state.events, event],
-      })),
+const loadEvents = (): Event[] => {
+  const stored = localStorage.getItem(LOCAL_STORAGE_KEY);
+  return stored ? JSON.parse(stored) : [];
+}
 
-    removeEvent: (id) =>
-      set((state) => ({
-        events: state.events.filter(
-          (event) => event.id !== id
-        ),
-      })),
+export const useEventStore = create<EventStore>((set) => ({
+  events: loadEvents(),
 
-    updateEvent: (updatedEvent) =>
-      set((state) => ({
-        events: state.events.map((event) =>
-          event.id === updatedEvent.id
-            ? updatedEvent
-            : event
-        ),
-      })),
-  }));
+  addEvent: (event) =>
+    set((state) => {
+      const updateEvents = [...state.events, event];
+
+      localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(updateEvents));
+
+      return { events: updateEvents };
+    }),
+
+  removeEvent: (id) =>
+    set((state) => {
+      const updateEvents = state.events.filter((event) => event.id !== id);
+
+      localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(updateEvents));
+
+      return { events: updateEvents };
+    }),
+
+  updateEvent: (updatedEvent) =>
+    set((state) => {
+      const updatedEvents = state.events.map((event) =>
+        event.id === updatedEvent.id ? updatedEvent : event
+      );
+
+      localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(updatedEvents));
+
+      return { events: updatedEvents };
+    }),
+}));
