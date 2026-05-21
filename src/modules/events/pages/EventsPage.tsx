@@ -17,6 +17,7 @@
 import MainLayout from "../../../layouts/MainLayout";
 
 import EventForm from "../components/EventForm";
+import EventList from "../components/EventList";
 
 export default function EventsPage() {
   return (
@@ -24,8 +25,21 @@ export default function EventsPage() {
       title="Eventos"
       subtitle="Gerencie seus compromissos"
     >
-      <div className="space-y-6">
-        <EventForm />
+      <div
+        className="
+          grid
+          grid-cols-1
+          2xl:grid-cols-3
+          gap-8
+        "
+      >
+        <div className="2xl:col-span-1">
+          <EventForm />
+        </div>
+
+        <div className="2xl:col-span-2">
+          <EventList />
+        </div>
       </div>
     </MainLayout>
   );

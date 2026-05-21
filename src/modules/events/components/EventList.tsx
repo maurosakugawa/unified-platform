@@ -2,45 +2,45 @@
 /**
  * 
  * @author Mauro Sakugawa
- * Date: 2026-05-21
- * License: MIT License
+ * @created 2026-05-21
+ * @license MIT License
  * @version 1.0.0
  */
-import { useEventStore } from '../store/useEventStore'
+import { useEventStore } from "../store/useEventStore";
+
+import EventCard from "./EventCard";
+
+import EmptyState from "../../../components/ui/EmptyState";
 
 export default function EventList() {
-  const events = useEventStore((state) => state.events)
-  const removeEvent = useEventStore((state) => state.removeEvent)
+  const events = useEventStore(
+    (state) => state.events
+  );
+
+  const removeEvent = useEventStore(
+    (state) => state.removeEvent
+  );
+
+  if (!events.length) {
+    return <EmptyState />;
+  }
 
   return (
-    <div className="space-y-4">
+    <div
+      className="
+        grid
+        grid-cols-1
+        xl:grid-cols-2
+        gap-6
+      "
+    >
       {events.map((event) => (
-        <div
+        <EventCard
           key={event.id}
-          className="card bg-base-100 shadow-md p-4"
-        >
-          <div className="flex justify-between">
-            <div>
-              <h2 className="font-bold text-lg">
-                {event.title}
-              </h2>
-
-              <p>{event.description}</p>
-
-              <p className="text-sm opacity-70">
-                {event.date} às {event.time}
-              </p>
-            </div>
-
-            <button
-              className="btn btn-error btn-sm"
-              onClick={() => removeEvent(event.id)}
-            >
-              Excluir
-            </button>
-          </div>
-        </div>
+          event={event}
+          onDelete={removeEvent}
+        />
       ))}
     </div>
-  )
+  );
 }

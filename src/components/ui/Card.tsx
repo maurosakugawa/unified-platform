@@ -2,27 +2,29 @@
 /**
  * 
  * @author Mauro Sakugawa
- * Date: 2026-05-21
- * License: MIT License
+ * @created 2026-05-21
+ * @license MIT License
  * @version 1.0.0
  */
+import type { ReactNode } from "react";
+
 interface CardProps {
-  children: React.ReactNode;
-  className?: string;
+  children: ReactNode;
 }
 
-export function Card({ children, className }: CardProps) {
+export default function Card({
+  children,
+}: CardProps) {
   return (
     <div
-      className={`
+      className="
         bg-white
-        rounded-3xl
+        rounded-2xl
         shadow-sm
         border
-        border-gray-100
+        border-slate-200
         p-6
-        ${className}
-      `}
+      "
     >
       {children}
     </div>
