@@ -14,13 +14,14 @@ import {
   Clock,
   MapPin,
   Trash2,
+  Pencil,
 } from "lucide-react";
 
 import type {
   Event,
   EventPriority,
 } from "../types/event.types";
-
+import { useEventModal } from "../store/useEventModal";
 import Badge from "../../../components/ui/Badge";
 import Card from "../../../components/ui/Card";
 
@@ -42,6 +43,10 @@ export default function EventCard({
     Média: "medium",
     Alta: "high",
   };
+
+  const openEdit = useEventModal(
+    (state) => state.openEdit
+  );
 
   return (
     <Card>
@@ -95,7 +100,18 @@ export default function EventCard({
         </div>
       </div>
 
-      <div className="mt-6 flex justify-end">
+      <div className="mt-6 flex justify-end gap-2">
+        <button
+          onClick={() => openEdit(event)}
+          className="
+            btn
+            btn-sm
+            btn-outline
+          "
+        >
+          <Pencil size={16} />
+        </button>
+
         <button
           onClick={() => onDelete(event.id)}
           className="

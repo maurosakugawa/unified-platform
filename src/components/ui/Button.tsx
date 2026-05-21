@@ -2,8 +2,8 @@
 /**
  * 
  * @author Mauro Sakugawa
- * Date: 2026-05-21
- * License: MIT License
+ * @created 2026-05-21
+ * @license MIT License
  * @version 1.0.0
  */
 import clsx from "clsx";
@@ -13,7 +13,7 @@ interface ButtonProps
   variant?: "primary" | "secondary" | "ghost";
 }
 
-export function Button({
+export default function Button({
   variant = "primary",
   className,
   ...props

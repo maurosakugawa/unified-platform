@@ -1,179 +1,283 @@
 // src/modules/events/components/EventForm.tsx
-/* *
- * 
- * @author Mauro Sakugawa
- * Date: 2026-05-21
- * License: MIT License
- * @version 1.0.0
- * */
 
-import { useState } from 'react'
-import { useEventStore } from '../store/useEventStore'
+/**
+ * Formulário responsável pela criação
+ * e edição de eventos.
+ *
+ * @author Mauro Sakugawa
+ * @created 2026-05-21
+ * @license MIT License
+ * @version 1.0.0
+ */
+
+import { useState } from "react";
+
+import Button from "../../../components/ui/Button";
+
+import { useEventStore } from "../store/useEventStore";
+import { useEventModal } from "../store/useEventModal";
+
 import {
   EVENT_CATEGORIES,
   EVENT_PRIORITIES,
-} from '../types/event.types'
+  type Event,
+  type EventCategory,
+  type EventPriority,
+} from "../types/event.types";
+
+const emptyForm: Event = {
+  id: "",
+  title: "",
+  description: "",
+  date: "",
+  time: "",
+  category: "Pessoal",
+  priority: "Média",
+  contact: "",
+  location: "",
+  reminder: 30,
+  createdAt: "",
+};
 
 export default function EventForm() {
-  const addEvent = useEventStore((state) => state.addEvent)
+  const addEvent = useEventStore(
+    (state) => state.addEvent
+  );
 
-  const [formData, setFormData] = useState({
-    title: '',
-    description: '',
-    date: '',
-    time: '',
-    category: '',
-    priority: '',
-    contact: '',
-    location: '',
-    reminder: 30,
-  })
+  const updateEvent = useEventStore(
+    (state) => state.updateEvent
+  );
 
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    })
-  }
+  const close = useEventModal(
+    (state) => state.close
+  );
 
-  const handleSubmit = (e) => {
-    e.preventDefault()
+  const editingEvent = useEventModal(
+    (state) => state.editingEvent
+  );
 
-    addEvent({
-      id: crypto.randomUUID(),
-      ...formData,
-      createdAt: new Date().toISOString(),
-    })
+  const [formData, setFormData] =
+    useState<Event>(() =>
+      editingEvent
+        ? editingEvent
+        : emptyForm
+    );
 
-    setFormData({
-      title: '',
-      description: '',
-      date: '',
-      time: '',
-      category: '',
-      priority: '',
-      contact: '',
-      location: '',
-      reminder: 30,
-    })
-  }
+  /**
+   * Atualiza o formulário quando
+   * um evento é selecionado para edição.
+
+  useEffect(() => {
+    if (editingEvent) {
+      setFormData(editingEvent);
+    } else {
+      setFormData(emptyForm);
+    }
+  }, [editingEvent]);
+   */
+  /**
+   * Atualiza os campos do formulário
+   */
+  const handleChange = (
+    e: React.ChangeEvent<
+      | HTMLInputElement
+      | HTMLTextAreaElement
+      | HTMLSelectElement
+    >
+  ) => {
+    const { name, value } = e.target;
+
+    setFormData((prev) => ({
+      ...prev,
+      [name]:
+        name === "reminder"
+          ? Number(value)
+          : value,
+    }));
+  };
+
+  /**
+   * Salva ou atualiza um evento
+   */
+  const handleSubmit = (
+    e: React.FormEvent
+  ) => {
+    e.preventDefault();
+
+    if (editingEvent) {
+      updateEvent(formData);
+    } else {
+      addEvent({
+        ...formData,
+        id: crypto.randomUUID(),
+        createdAt:
+          new Date().toISOString(),
+      });
+    }
+
+    setFormData(emptyForm);
+
+    close();
+  };
 
   return (
-    <div className="card bg-base-100 shadow-xl">
-      <div className="card-body">
-        <h2 className="card-title text-2xl mb-4">
-          Novo Evento
-        </h2>
+    <form
+      onSubmit={handleSubmit}
+      className="space-y-5"
+    >
+      <div className="grid gap-5">
+        <input
+          type="text"
+          name="title"
+          placeholder="Título"
+          value={formData.title}
+          onChange={handleChange}
+          className="
+            input
+            input-bordered
+            w-full
+          "
+          required
+        />
 
-        <form
-          onSubmit={handleSubmit}
-          className="space-y-4"
-        >
+        <textarea
+          name="description"
+          placeholder="Descrição"
+          value={formData.description}
+          onChange={handleChange}
+          className="
+            textarea
+            textarea-bordered
+            h-32
+          "
+        />
+
+        <div className="grid md:grid-cols-2 gap-5">
           <input
-            type="text"
-            name="title"
-            placeholder="Título"
-            className="input input-bordered w-full"
-            value={formData.title}
+            type="date"
+            name="date"
+            value={formData.date}
             onChange={handleChange}
+            className="
+              input
+              input-bordered
+            "
+            required
           />
 
-          <textarea
-            name="description"
-            placeholder="Descrição"
-            className="textarea textarea-bordered w-full h-32"
-            value={formData.description}
+          <input
+            type="time"
+            name="time"
+            value={formData.time}
             onChange={handleChange}
+            className="
+              input
+              input-bordered
+            "
+            required
           />
+        </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <input
-              type="date"
-              name="date"
-              className="input input-bordered w-full"
-              value={formData.date}
-              onChange={handleChange}
-            />
-
-            <input
-              type="time"
-              name="time"
-              className="input input-bordered w-full"
-              value={formData.time}
-              onChange={handleChange}
-            />
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <select
-              name="category"
-              className="select select-bordered w-full"
-              value={formData.category}
-              onChange={handleChange}
-            >
-              <option value="">
-                Categoria
-              </option>
-
-              {EVENT_CATEGORIES.map((category) => (
-                <option key={category}>
+        <div className="grid md:grid-cols-2 gap-5">
+          <select
+            name="category"
+            value={formData.category}
+            onChange={handleChange}
+            className="
+              select
+              select-bordered
+            "
+          >
+            {EVENT_CATEGORIES.map(
+              (
+                category: EventCategory
+              ) => (
+                <option
+                  key={category}
+                  value={category}
+                >
                   {category}
                 </option>
-              ))}
-            </select>
+              )
+            )}
+          </select>
 
-            <select
-              name="priority"
-              className="select select-bordered w-full"
-              value={formData.priority}
-              onChange={handleChange}
-            >
-              <option value="">
-                Prioridade
-              </option>
-
-              {EVENT_PRIORITIES.map((priority) => (
-                <option key={priority}>
+          <select
+            name="priority"
+            value={formData.priority}
+            onChange={handleChange}
+            className="
+              select
+              select-bordered
+            "
+          >
+            {EVENT_PRIORITIES.map(
+              (
+                priority: EventPriority
+              ) => (
+                <option
+                  key={priority}
+                  value={priority}
+                >
                   {priority}
                 </option>
-              ))}
-            </select>
-          </div>
+              )
+            )}
+          </select>
+        </div>
 
-          <input
-            type="text"
-            name="contact"
-            placeholder="Contato relacionado"
-            className="input input-bordered w-full"
-            value={formData.contact}
-            onChange={handleChange}
-          />
+        <input
+          type="text"
+          name="contact"
+          placeholder="Contato relacionado"
+          value={formData.contact}
+          onChange={handleChange}
+          className="
+            input
+            input-bordered
+          "
+        />
 
-          <input
-            type="text"
-            name="location"
-            placeholder="Local"
-            className="input input-bordered w-full"
-            value={formData.location}
-            onChange={handleChange}
-          />
+        <input
+          type="text"
+          name="location"
+          placeholder="Local"
+          value={formData.location}
+          onChange={handleChange}
+          className="
+            input
+            input-bordered
+          "
+        />
 
-          <input
-            type="number"
-            name="reminder"
-            placeholder="Lembrete em minutos"
-            className="input input-bordered w-full"
-            value={formData.reminder}
-            onChange={handleChange}
-          />
-
-          <div className="flex justify-end">
-            <button className="btn btn-primary">
-              Salvar Evento
-            </button>
-          </div>
-        </form>
+        <input
+          type="number"
+          name="reminder"
+          placeholder="Lembrete em minutos"
+          value={formData.reminder}
+          onChange={handleChange}
+          className="
+            input
+            input-bordered
+          "
+        />
       </div>
-    </div>
-  )
+
+      <div className="flex justify-end gap-3">
+        <button
+          type="button"
+          onClick={close}
+          className="btn btn-ghost"
+        >
+          Cancelar
+        </button>
+
+        <Button type="submit">
+          {editingEvent
+            ? "Salvar alterações"
+            : "Criar evento"}
+        </Button>
+      </div>
+    </form>
+  );
 }
