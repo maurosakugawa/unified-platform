@@ -14,7 +14,7 @@ import type {
 } from "../types/event.types";
 
 import { useEventStore } from "../store/useEventStore";
-
+import { motion } from "framer-motion";
 import EventCard from "./EventCard";
 
 import EmptyState from "../../../components/ui/EmptyState";
@@ -30,12 +30,25 @@ export default function EventList({
     (state) => state.removeEvent
   );
 
+  const container = {
+    hidden: {},
+
+    visible: {
+      transition: {
+        staggerChildren: 0.08,
+      },
+    },
+  };
+
   if (!events.length) {
     return <EmptyState />;
   }
 
   return (
-    <div
+    <motion.div
+      variants={container}
+      initial="hidden"
+      animate="visible"
       className="
         grid
         grid-cols-1
@@ -50,6 +63,6 @@ export default function EventList({
           onDelete={removeEvent}
         />
       ))}
-    </div>
+    </motion.div>
   );
 }

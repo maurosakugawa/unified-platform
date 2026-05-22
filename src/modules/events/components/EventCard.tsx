@@ -1,5 +1,4 @@
 // src/modules/events/components/EventCard.tsx
-
 /**
  * Card de evento
  *
@@ -8,7 +7,6 @@
  * @license MIT
  * @version 1.0.0
  */
-
 import {
   Calendar,
   Clock,
@@ -16,7 +14,6 @@ import {
   Trash2,
   Pencil,
 } from "lucide-react";
-
 import type {
   Event,
   EventPriority,
@@ -25,9 +22,11 @@ import { useEventModal } from "../store/useEventModal";
 import Badge from "../../../components/ui/Badge";
 import Card from "../../../components/ui/Card";
 
+import { motion } from "framer-motion";
+import { slideUp } from "../../../animations/slide";
+
 interface EventCardProps {
   event: Event;
-
   onDelete: (id: string) => void;
 }
 
@@ -49,20 +48,32 @@ export default function EventCard({
   );
 
   return (
-    <Card>
-      <div className="flex items-start justify-between">
-        <div>
-          <h3
-            className="
-              text-lg
-              font-bold
-              text-slate-800
-            "
-          >
-            {event.title}
-          </h3>
+    <motion.div
+      variants={slideUp}
+      whileHover={{
+        y: -4,
+        scale: 1.01,
+      }}
+      transition={{
+        duration: 0.2,
+      }}
+    >
+      <Card
+        className="
+          transition-all
+          duration-300
+          hover:-translate-y-1
+          hover:shadow-2xl
+          hover:shadow-primary/10
+        "
+      >
+        <div className="flex items-start justify-between">
+          <div>
+            <h3 className="text-lg font-bold text-base-content">
+              {event.title}
+            </h3>
 
-          <p className="text-slate-500 mt-1">
+          <p className="text-base-content/60 mt-1">
             {event.description}
           </p>
         </div>
@@ -76,14 +87,7 @@ export default function EventCard({
         </Badge>
       </div>
 
-      <div
-        className="
-          mt-6
-          space-y-3
-          text-sm
-          text-slate-600
-        "
-      >
+      <div className="mt-6 space-y-3 text-sm text-base-content/70">
         <div className="flex items-center gap-2">
           <Calendar size={16} />
           {event.date}
@@ -118,12 +122,13 @@ export default function EventCard({
             btn
             btn-sm
             btn-error
-            text-white
+            text-base-content
           "
         >
           <Trash2 size={16} />
         </button>
       </div>
     </Card>
+  </motion.div>
   );
 }

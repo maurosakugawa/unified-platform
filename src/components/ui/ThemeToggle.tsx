@@ -7,33 +7,22 @@
  * @license MIT
  * @version 1.0.0
  */
-
-import {
-  Moon,
-  Sun,
-} from "lucide-react";
-
+import { Moon, Sun } from "lucide-react";
 import { useTheme } from "../../hooks/useTheme";
 
 export default function ThemeToggle() {
-  const {
-    theme,
-    toggleTheme,
-  } = useTheme();
+  const { theme, toggleTheme } = useTheme();
 
   return (
     <button
       onClick={toggleTheme}
-      className="
-        btn
-        btn-circle
-        btn-ghost
-      "
+      className="btn btn-circle btn-ghost"
+      aria-label={`Alternar para tema ${theme === 'dark' ? 'claro' : 'escuro'}`}
     >
       {theme === "light" ? (
-        <Moon size={18} />
+        <Moon size={20} className="text-base-content" />
       ) : (
-        <Sun size={18} />
+        <Sun size={20} className="text-base-content" />
       )}
     </button>
   );

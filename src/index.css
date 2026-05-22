@@ -1,10 +1,19 @@
+@import "./styles/theme.css";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-* {
-  transition:
-    background-color 0.2s ease,
-    border-color 0.2s ease,
-    color 0.2s ease;
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  @apply bg-base-100 text-base-content;
+}
+
+html[data-theme="dark"] body {
+  @apply bg-[#0b1120] text-white;
 }

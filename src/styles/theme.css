@@ -1,23 +1,50 @@
-// src/styles/theme.css
 /**
-*
-**/
-/* Theme */
-:root {
-  --color-primary: #7c3aed;
-  --color-primary-light: #a78bfa;
+ * Tema customizado
+ */
 
-  --color-bg: #f5f3ff;
-  --color-card: #ffffff;
+/* =========================
+   LIGHT
+========================= */
 
-  --color-text: #111827;
-  --color-muted: #6b7280;
-
-  --color-border: #e5e7eb;
+[data-theme="light"] {
+  --header-bg: #f1f5f9;
+  --search-bg: #fffff4;
+  --search-text: #0f172a;
 }
 
-body {
-  background: var(--color-bg);
-  color: var(--color-text);
-  font-family: Inter, sans-serif;
+/* =========================
+   DARK
+========================= */
+
+[data-theme="dark"] {
+  --header-bg: #240046;
+  --search-bg: #334155;
+  --search-text: #f1f5f9;
+}
+
+/* =========================
+   UTILITIES
+========================= */
+
+.glass {
+  backdrop-filter: blur(20px);
+}
+
+.gradient-header {
+  background: linear-gradient(
+    90deg,
+    #1a1333 0%,
+    #1b1b3a 50%,
+    #111827 100%
+  );
+}
+
+.dashboard-bg {
+  background:
+    radial-gradient(
+      circle at top,
+      rgba(124, 58, 237, 0.12),
+      transparent 30%
+    ),
+    #0b1120;
 }

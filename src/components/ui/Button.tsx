@@ -1,6 +1,6 @@
 // src/components/ui/Button.tsx
 /**
- * 
+ * Button component for rendering styled buttons
  * @author Mauro Sakugawa
  * @created 2026-05-21
  * @license MIT License

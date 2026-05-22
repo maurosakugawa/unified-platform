@@ -1,5 +1,4 @@
 // src/layouts/Header.tsx
-
 /**
  * Header principal da aplicação
  *
@@ -16,7 +15,7 @@
 import { Search } from "lucide-react";
 import ThemeToggle from "../components/ui/ThemeToggle";
 
-interface HeaderProps {
+interface Props {
   title: string;
   subtitle: string;
 }
@@ -24,55 +23,72 @@ interface HeaderProps {
 export function Header({
   title,
   subtitle,
-}: HeaderProps) {
+}: Props) {
   return (
     <header
       className="
-        h-20
-        bg-white
+        h-24
         border-b
-        border-gray-100
+        border-base-300
+        bg-header-bg
         px-8
         flex
         items-center
         justify-between
+        transition-colors
+        duration-300
       "
     >
       <div>
-        <h2 className="text-2xl font-bold">
+        <h1 className="text-3xl font-bold text-base-content">
           {title}
-        </h2>
-
-        <p className="text-sm text-gray-500">
+        </h1>
+        <p className="text-base-content">
           {subtitle}
         </p>
       </div>
-
+      
       <div className="flex items-center gap-4">
-        <div className="relative">
+        {/* Busca */}
+        <label
+          className="
+            input
+            input-bordered
+            flex
+            items-center
+            gap-2
+            rounded-2xl
+            w-72
+            bg-search-bg
+            border-base-300
+          "
+        >
           <Search
-            className="
-              absolute
-              left-3
-              top-3
-              text-base-content/40
-            "
             size={18}
+            className="text-search-text/60"
           />
-
           <input
-            placeholder="Buscar..."
+            type="text"
             className="
-              input
-              input-bordered
-              rounded-xl
-              pl-10
-              w-72
+              grow
+              bg-transparent
+              text-search-text
+              placeholder:text-search-text/50
             "
+            placeholder="Buscar eventos..."
           />
-        </div>
-
+        </label>
+        
+        {/* Toggle */}
         <ThemeToggle />
+        
+        {/* Avatar
+        <div className="avatar placeholder">
+          <div className="bg-primary text-neutral-content rounded-full w-10">
+            <span className="text-xs">M</span>
+          </div>
+        </div>
+         */}
       </div>
     </header>
   );

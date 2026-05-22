@@ -1,5 +1,4 @@
 // src/contexts/ThemeContext.ts
-
 /**
  * Context do tema da aplicação.
  *
@@ -8,18 +7,13 @@
  * @license MIT
  * @version 1.0.0
  */
-
 import { createContext } from "react";
 
 export type Theme = "light" | "dark";
 
 export interface ThemeContextData {
   theme: Theme;
-
   toggleTheme: () => void;
 }
 
-export const ThemeContext =
-  createContext<ThemeContextData | null>(
-    null
-  );
+export const ThemeContext = createContext<ThemeContextData | null>(null);

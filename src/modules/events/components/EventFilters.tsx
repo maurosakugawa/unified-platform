@@ -1,5 +1,4 @@
 // src/modules/events/components/EventFilters.tsx
-
 /**
  * Filtros dos eventos
  *
@@ -16,43 +15,38 @@ import {
 
 interface Props {
   category: string;
+  setCategory: ( value: string ) => void;
 
   priority: string;
-
-  onCategoryChange: (
-    value: string
-  ) => void;
-
-  onPriorityChange: (
-    value: string
-  ) => void;
+  setPriority: ( value: string ) => void;
 }
 
 export default function EventFilters({
   category,
+  setCategory,
   priority,
-  onCategoryChange,
-  onPriorityChange,
+  setPriority,
 }: Props) {
   return (
     <div
       className="
         flex
         flex-col
-        lg:flex-row
+        md:flex-row
         gap-4
       "
     >
       <select
         value={category}
         onChange={(e) =>
-          onCategoryChange(e.target.value)
+          setCategory(e.target.value)
         }
         className="
           select
           select-bordered
-          rounded-2xl
-          bg-white
+          rounded-xl
+          w-full
+          md:w-52
         "
       >
         <option value="">
@@ -74,13 +68,14 @@ export default function EventFilters({
       <select
         value={priority}
         onChange={(e) =>
-          onPriorityChange(e.target.value)
+          setPriority(e.target.value)
         }
         className="
           select
           select-bordered
-          rounded-2xl
-          bg-white
+          rounded-xl
+          w-full
+          md:w-52
         "
       >
         <option value="">

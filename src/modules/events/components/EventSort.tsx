@@ -31,9 +31,10 @@ export default function EventSort({
         select
         select-bordered
         rounded-2xl
-        bg-white
+        bg-base-100
         w-full
         md:w-60
+        p-2
       "
     >
       <option value="created">

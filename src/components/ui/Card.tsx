@@ -1,31 +1,19 @@
 // src/components/ui/Card.tsx
 /**
- * 
+ * Card component for rendering styled cards
  * @author Mauro Sakugawa
  * @created 2026-05-21
  * @license MIT License
  * @version 1.0.0
  */
-import type { ReactNode } from "react";
-
 interface CardProps {
-  children: ReactNode;
+  children: React.ReactNode;
+  className?: string;
 }
 
-export default function Card({
-  children,
-}: CardProps) {
+export default function Card({ children, className = "" }: CardProps) {
   return (
-    <div
-      className="
-        bg-white
-        rounded-2xl
-        shadow-sm
-        border
-        border-slate-200
-        p-6
-      "
-    >
+    <div className={`bg-card-bg border border-base-300 rounded-3xl p-6 shadow-lg transition-colors duration-300 ${className}`}>
       {children}
     </div>
   );

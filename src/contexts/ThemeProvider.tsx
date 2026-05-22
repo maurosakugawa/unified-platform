@@ -9,59 +9,52 @@
  * @license MIT
  * @version 1.0.0
  */
-
 import {
   useEffect,
   useState,
   type ReactNode,
 } from "react";
-
-import {
-  ThemeContext,
-  type Theme,
-} from "./ThemeContext";
+import { ThemeContext } from "./ThemeContext";
 
 interface Props {
   children: ReactNode;
 }
 
-export function ThemeProvider({
+type Theme = "light" | "dark";
+
+export default function ThemeProvider({
   children,
 }: Props) {
-  const [theme, setTheme] =
-    useState<Theme>(() => {
-      const savedTheme =
-        localStorage.getItem("theme");
+  // Inicializa do localStorage ou sistema
+  const [theme, setTheme] = useState<Theme>(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem("theme") as Theme;
+      if (saved) return saved;
+      
+      // Detecta preferência do sistema
+      if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        return "dark";
+      }
+    }
+    return "light";
+  });
 
-      return savedTheme === "dark"
-        ? "dark"
-        : "light";
-    });
-
+  // Aplica o tema no HTML e localStorage
   useEffect(() => {
-    document.documentElement.setAttribute(
-      "data-theme",
-      theme
-    );
-
+    const root = window.document.documentElement;
+    root.setAttribute("data-theme", theme);
     localStorage.setItem("theme", theme);
   }, [theme]);
 
+  /**
+   * Alterna entre light e dark.
+   */
   const toggleTheme = () => {
-    setTheme((prev) =>
-      prev === "light"
-        ? "dark"
-        : "light"
-    );
+    setTheme((prev) => (prev === "dark" ? "light" : "dark"));
   };
 
   return (
-    <ThemeContext.Provider
-      value={{
-        theme,
-        toggleTheme,
-      }}
-    >
+    <ThemeContext.Provider value={{ theme, toggleTheme }}>
       {children}
     </ThemeContext.Provider>
   );

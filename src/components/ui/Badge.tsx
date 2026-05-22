@@ -2,8 +2,8 @@
 /**
  * 
  * @author Mauro Sakugawa
- * @created 2026-05-21
- * @license MIT License
+ * Date: 2026-05-21
+ * License: MIT License
  * @version 1.0.0
  */
 interface BadgeProps {

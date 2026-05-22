@@ -1,5 +1,4 @@
 // src/modules/events/pages/EventsPage.tsx
-
 /**
  * Página principal dos eventos
  *
@@ -8,21 +7,16 @@
  * @license MIT
  * @version 1.0.0
  */
-
 import { useState } from "react";
 
 import MainLayout from "../../../layouts/MainLayout";
-
 import Button from "../../../components/ui/Button";
-
 import EventList from "../components/EventList";
 import EventSearch from "../components/EventSearch";
 import EventFilters from "../components/EventFilters";
 import EventModal from "../components/EventModal";
 import EventSort from "../components/EventSort";
-
 import { useFilteredEvents } from "../hooks/useFilteredEvents";
-
 import { useEventModal } from "../store/useEventModal";
 
 export default function EventsPage() {
@@ -34,7 +28,6 @@ export default function EventsPage() {
 
   const [priority, setPriority] =
     useState("");
-
     
   const [sortBy, setSortBy] =
     useState("created"); 
@@ -58,32 +51,15 @@ export default function EventsPage() {
     >
       <div className="space-y-8">
         {/* HEADER */}
-        <div
-          className="
-            flex
-            flex-col
-            lg:flex-row
-            lg:items-center
-            lg:justify-between
-            gap-4
-          "
-        >
+        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
           <div>
-            <h1
-              className="
-                text-3xl
-                font-bold
-                text-slate-800
-              "
-            >
+            <h1 className="text-3xl font-bold text-base-content">
               Seus eventos
             </h1>
-
-            <p className="text-slate-500 mt-1">
+            <p className="text-base-content/60 mt-1">
               Organize sua rotina inteligente
             </p>
           </div>
-
           <Button onClick={openCreate}>
             Novo evento
           </Button>
@@ -98,9 +74,9 @@ export default function EventsPage() {
         {/* FILTROS */}
         <EventFilters
           category={category}
+          setCategory={setCategory}
           priority={priority}
-          onCategoryChange={setCategory}
-          onPriorityChange={setPriority}
+          setPriority={setPriority}
         />
 
         {/* LISTA */}

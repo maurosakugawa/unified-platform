@@ -1,5 +1,4 @@
 // src/layouts/MainLayout.tsx
-
 /**
  * Layout principal da aplicação
  *
@@ -13,9 +12,10 @@
  * @version 1.0.0
  * @license MIT
  */
-
 import type { ReactNode } from "react";
 
+import { motion } from "framer-motion";
+import { fadeIn } from "../animations/fade";
 import { Sidebar } from "./Sidebar";
 import { Header } from "./Header";
 
@@ -32,25 +32,27 @@ export default function MainLayout({
   subtitle,
 }: Props) {
   return (
-    <div className="flex h-screen overflow-hidden">
+    <div className="flex h-screen bg-base-100 text-base-content">
       <Sidebar />
 
-      <div className="flex-1 flex flex-col">
+      <div className="flex-1 flex flex-col overflow-hidden">
         <Header
           title={title}
           subtitle={subtitle}
         />
 
-        <main
+        <motion.main
+          variants={fadeIn}
+          initial="hidden"
+          animate="visible"
           className="
             flex-1
             overflow-y-auto
             p-8
-            bg-base-200
           "
         >
           {children}
-        </main>
+        </motion.main>
       </div>
     </div>
   );

@@ -10,33 +10,12 @@ import { CalendarDays } from "lucide-react";
 
 export default function EmptyState() {
   return (
-    <div
-      className="
-        flex
-        flex-col
-        items-center
-        justify-center
-        py-20
-        text-center
-      "
-    >
-      <CalendarDays
-        size={64}
-        className="text-slate-300"
-      />
-
-      <h3
-        className="
-          mt-4
-          text-xl
-          font-semibold
-          text-slate-700
-        "
-      >
+    <div className="flex flex-col items-center justify-center py-20 text-center">
+      <CalendarDays size={64} className="text-base-content/30" />
+      <h3 className="mt-4 text-xl font-semiboldtext-base-content " >
         Nenhum evento cadastrado
       </h3>
-
-      <p className="text-slate-400 mt-2">
+      <p className="text-base-content/50 mt-2">
         Crie seu primeiro compromisso.
       </p>
     </div>
