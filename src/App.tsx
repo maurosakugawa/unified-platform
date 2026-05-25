@@ -7,32 +7,8 @@
  * License: MIT License
  * @version 1.0.0
  */
-import { Routes, Route, Link } from 'react-router-dom'
-
-import EventsPage from './modules/events/pages/EventsPage'
-
-function Home() {
-  return (
-    <div className="p-4">
-      <Link
-        to="/events"
-        className="btn btn-primary"
-      >
-        Smart Planner
-      </Link>
-    </div>
-  )
-}
+import AppRoutes from "./routes/AppRoutes";
 
 export default function App() {
-  return (
-    <Routes>
-      <Route path="/" element={<Home />} />
-
-      <Route
-        path="/events"
-        element={<EventsPage />}
-      />
-    </Routes>
-  )
+  return <AppRoutes />;
 }

@@ -22,6 +22,7 @@ import App from "./App";
 
 import "./index.css";
 import "./styles/theme.css";
+import "./styles/calendar.css";
 
 ReactDOM.createRoot(
   document.getElementById(
