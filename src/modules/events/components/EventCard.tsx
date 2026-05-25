@@ -21,7 +21,7 @@ import type {
 import { useEventModal } from "../store/useEventModal";
 import Badge from "../../../components/ui/Badge";
 import Card from "../../../components/ui/Card";
-
+import { useNotifications } from "../../notifications/hooks/useNotifications";
 import { motion } from "framer-motion";
 import { slideUp } from "../../../animations/slide";
 
@@ -46,6 +46,18 @@ export default function EventCard({
   const openEdit = useEventModal(
     (state) => state.openEdit
   );
+
+  const notifications =
+    useNotifications();
+
+  function handleDelete() {
+    onDelete(event.id);
+
+    notifications.warning(
+      "Evento removido",
+      "O evento foi excluído."
+    );
+  }
 
   return (
     <motion.div
@@ -117,7 +129,7 @@ export default function EventCard({
         </button>
 
         <button
-          onClick={() => onDelete(event.id)}
+          onClick={handleDelete}
           className="
             btn
             btn-sm

@@ -17,7 +17,7 @@ import ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 
 import ThemeProvider from "./contexts/ThemeProvider";
-
+import NotificationContainer from "./modules/notifications/components/NotificationContainer";
 import App from "./App";
 
 import "./index.css";
@@ -33,6 +33,7 @@ ReactDOM.createRoot(
     <ThemeProvider>
       <BrowserRouter>
         <App />
+        <NotificationContainer />
       </BrowserRouter>
     </ThemeProvider>
   </React.StrictMode>

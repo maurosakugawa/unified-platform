@@ -1,4 +1,6 @@
 @import "./styles/theme.css";
+@import "./styles/calendar.css";
+@import "./styles/animations.css";
 
 @tailwind base;
 @tailwind components;
@@ -11,6 +13,7 @@ body,
 }
 
 body {
+  margin: 0;
   @apply bg-base-100 text-base-content;
 }
 

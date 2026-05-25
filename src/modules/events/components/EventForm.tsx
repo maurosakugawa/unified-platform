@@ -13,7 +13,7 @@
 import { useState } from "react";
 
 import Button from "../../../components/ui/Button";
-
+import { useNotifications } from "../../../modules/notifications/hooks/useNotifications";
 import { useEventStore } from "../store/useEventStore";
 import { useEventModal } from "../store/useEventModal";
 
@@ -56,6 +56,8 @@ export default function EventForm() {
     (state) => state.editingEvent
   );
 
+  const notifications = useNotifications();
+
   const [formData, setFormData] =
     useState<Event>(() =>
       editingEvent
@@ -63,18 +65,6 @@ export default function EventForm() {
         : emptyForm
     );
 
-  /**
-   * Atualiza o formulário quando
-   * um evento é selecionado para edição.
-
-  useEffect(() => {
-    if (editingEvent) {
-      setFormData(editingEvent);
-    } else {
-      setFormData(emptyForm);
-    }
-  }, [editingEvent]);
-   */
   /**
    * Atualiza os campos do formulário
    */
@@ -97,28 +87,38 @@ export default function EventForm() {
   };
 
   /**
-   * Salva ou atualiza um evento
-   */
-  const handleSubmit = (
-    e: React.FormEvent
-  ) => {
-    e.preventDefault();
+ * Salva ou atualiza um evento
+ */
+const handleSubmit = (
+  e: React.FormEvent
+) => {
+  e.preventDefault();
 
-    if (editingEvent) {
-      updateEvent(formData);
-    } else {
-      addEvent({
-        ...formData,
-        id: crypto.randomUUID(),
-        createdAt:
-          new Date().toISOString(),
-      });
-    }
+  if (editingEvent) {
+    updateEvent(formData);
 
-    setFormData(emptyForm);
+    notifications.info(
+      "Evento atualizado",
+      "As alterações foram salvas."
+    );
+  } else {
+    addEvent({
+      ...formData,
+      id: crypto.randomUUID(),
+      createdAt:
+        new Date().toISOString(),
+    });
 
-    close();
-  };
+    notifications.success(
+      "Evento criado",
+      "Seu evento foi salvo com sucesso."
+    );
+  }
+
+  setFormData(emptyForm);
+
+  close();
+};
 
   return (
     <form

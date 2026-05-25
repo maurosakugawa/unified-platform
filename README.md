@@ -44,6 +44,8 @@ Sistema moderno de gerenciamento de eventos, tarefas e produtividade desenvolvid
     - [✅ Sprint 2C.3 — Filtros + Ordenação](#-sprint-2c3--filtros--ordenação)
     - [✅ Sprint 2C.4 — Sistema de Temas](#-sprint-2c4--sistema-de-temas)
     - [✅ Sprint 2C.5 — Framer Motion + Transições](#-sprint-2c5--framer-motion--transições)
+    - [✅ ✅ Sprint 2C.6 — Calendário Visual](#--sprint-2c6--calendário-visual)
+    - [✅ Sprint 2C.7 — Toasts + Notificações + Reminder System](#-sprint-2c7--toasts--notificações--reminder-system)
     - [Próximas Sprints](#próximas-sprints)
   - [👨‍💻 Autor](#-autor)
   - [📄 Licença](#-licença)
@@ -381,6 +383,50 @@ Adicionar:
 - [x] Smooth transitions
 
 ---
+
+### ✅ ✅ Sprint 2C.6 — Calendário Visual
+
+*Objetivos*
+
+Adicionar:
+
+- Estrutura por domínio
+- React Big Calendar
+- Navegação real
+- Base futura pronta
+
+*Resultado da Sprint*
+
+- [x] modules/calendar
+- [x] separação futura preparada
+- [x] arquitetura escalável
+- [x] integração funcionando
+- [x] localizer pt-BR
+- [x] Modal animations
+- [x] mapeamento de eventos
+- [x] rota /calendar
+- [x] sidebar integrada
+- [x] navegação React Router
+- [x] drag and drop (futuro)
+- [x] reminders
+- [x] integração contatos
+- [x] integração clima
+- [x] Google Calendar sync
+- [x] eventos recorrentes
+
+---
+
+### ✅ Sprint 2C.7 — Toasts + Notificações + Reminder System
+
+*Objetivos*
+
+- Toasts modernos
+- Sistema global de notificações
+- Reminder System
+
+*Resultado da Sprint*
+
+- [x] evento criado
 
 ### Próximas Sprints
 

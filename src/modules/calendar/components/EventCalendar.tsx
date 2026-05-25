@@ -1,4 +1,4 @@
-// src/modules/events/calendar/EventCalendar.tsx
+// src/modules/calendar/components/EventCalendar.tsx
 
 /**
  * Calendário visual dos eventos
@@ -9,7 +9,13 @@
  * @version 1.0.0
  */
 
-import { Calendar, dateFnsLocalizer, } from "react-big-calendar";
+import { useState } from "react";
+
+import {
+  Calendar,
+  dateFnsLocalizer,
+  type View,
+} from "react-big-calendar";
 
 import {
   format,
@@ -22,9 +28,11 @@ import { ptBR } from "date-fns/locale";
 
 import "react-big-calendar/lib/css/react-big-calendar.css";
 
-import { useEventStore } from "../../events/store/useEventStore";
+import { useEventStore }
+  from "../../events/store/useEventStore";
 
-import { mapEventsToCalendar } from "../utils/calendar.utils";
+import { mapEventsToCalendar }
+  from "../utils/calendar.utils";
 
 const locales = {
   "pt-BR": ptBR,
@@ -46,6 +54,18 @@ export default function EventCalendar() {
   const calendarEvents =
     mapEventsToCalendar(events);
 
+  /**
+   * View controlada
+   */
+  const [view, setView] =
+    useState<View>("month");
+
+  /**
+   * Data controlada
+   */
+  const [date, setDate] =
+    useState(new Date());
+
   return (
     <div
       className="
@@ -63,7 +83,43 @@ export default function EventCalendar() {
         startAccessor="start"
         endAccessor="end"
         culture="pt-BR"
+
+        /**
+         * Controle da visualização
+         */
+        view={view}
+        onView={(newView) =>
+          setView(newView)
+        }
+
+        /**
+         * DATE
+         */
+        date={date}
+        onNavigate={(newDate) =>
+          setDate(newDate)
+        }
+
+        /**
+         * Views habilitadas
+         */
+        views={{
+          month: true,
+          week: true,
+          day: true,
+          agenda: true,
+        }}
+
+        defaultView="month"
+
+        /**
+         * Extras UX
+         */
+        selectable
+        popup
+
         style={{ height: 700 }}
+
         messages={{
           today: "Hoje",
           next: "Próximo",
