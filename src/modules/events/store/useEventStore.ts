@@ -5,147 +5,129 @@
  * @author Mauro Sakugawa
  * @created 2026-05-21
  * @license MIT
- * @version 1.0.0
+ * @version 2.0.0
  */
-
 import { create } from "zustand";
 
-import type {
-  Event,
-} from "../types/event.types";
-
-import {
-  saveToStorage,
-  loadFromStorage,
-} from "../../../services/storage/localStorage.service";
+import type { Event, } from "../types/event.types";
+import { getAllEvents, saveEvent, updateEvent as updateEventDB, deleteEvent as deleteEventDB, } from "../services/eventDb.service";
 
 interface EventStore {
   events: Event[];
 
-  addEvent: (
-    event: Event
-  ) => void;
+  hydrateEvents: () => Promise<void>;
 
-  updateEvent: (
-    event: Event
-  ) => void;
+  setEvents: ( events: Event[] ) => void;
 
-  deleteEvent: (
-    id: string
-  ) => void;
+  addEvent: ( event: Event ) => Promise<void>;
 
-  markReminderAsSent: (
-    id: string
-  ) => void;
+  updateEvent: ( event: Event ) => Promise<void>;
+
+  removeEvent: ( id: string ) => Promise<void>;
+
+  markReminderAsSent: ( id: string ) => Promise<void>;
+
 }
 
-const STORAGE_KEY =
-  "smart-planner-events";
-
-/**
- * Carrega eventos do localStorage
-
-const loadEvents = (): Event[] => {
-  const stored =
-    localStorage.getItem(
-      LOCAL_STORAGE_KEY
-    );
-
-  return stored
-    ? JSON.parse(stored).map(
-        (event: Event) => ({
-          reminderSent: false,
-          ...event,
-        })
-      )
-    : [];
-}; */
-
-
 export const useEventStore =
-  create<EventStore>((set) => ({
-    events: loadFromStorage<Event[]>(
-      STORAGE_KEY,
-      []
-    ),
+  create<EventStore>((set, get) => ({
+    events: [],
 
-    addEvent: (event) =>
-      set((state) => {
-        const updated = [
+    /**
+     * Carrega eventos do IndexedDB
+     */
+    hydrateEvents: async () => {
+      const events = await getAllEvents();
+
+      set({ events, });
+    },
+
+    /**
+     * Define a lista de eventos (substitui todo o estado)
+     */
+    setEvents: (events) => {
+      set({ events });
+    },
+
+    /**
+     * Adiciona evento
+     */
+    addEvent: async (event) => {
+      await saveEvent(event);
+
+      set((state) => ({
+        events: [
           ...state.events,
           event,
-        ];
+        ],
+      }));
+    },
 
-        saveToStorage(
-          STORAGE_KEY,
-          updated
-        );
-
-        return {
-          events: updated,
-        };
-      }),
-
-    updateEvent: (
+    /**
+     * Atualiza evento
+     */
+    updateEvent: async (
       updatedEvent
-    ) =>
-      set((state) => {
-        const updated =
+    ) => {
+      await updateEventDB(
+        updatedEvent
+      );
+
+      set((state) => ({
+        events:
           state.events.map((event) =>
             event.id === updatedEvent.id
               ? updatedEvent
               : event
-          );
+          ),
+      }));
+    },
 
-        saveToStorage(
-          STORAGE_KEY,
-          updated
-        );
+    /**
+     * Remove evento
+     */
+    removeEvent: async (id) => {
+      await deleteEventDB(id);
 
-        return {
-          events: updated,
-        };
-      }),
-
-    deleteEvent: (id) =>
-      set((state) => {
-        const updated =
+      set((state) => ({
+        events:
           state.events.filter(
             (event) =>
               event.id !== id
+          ),
+      }));
+    },
+    /**
+     * Marca reminder como enviado
+     */
+    markReminderAsSent:
+      async (id) => {
+        const event =
+          get().events.find(
+            (event) =>
+              event.id === id
           );
 
-        saveToStorage(
-          STORAGE_KEY,
-          updated
+        if (!event) {
+          return;
+        }
+
+        const updatedEvent = {
+          ...event,
+          reminderSent: true,
+        };
+
+        await updateEventDB(
+          updatedEvent
         );
 
-        return {
-          events: updated,
-        };
-      }),
-
-    markReminderAsSent: (
-      id
-    ) =>
-      set((state) => {
-        const updated =
-          state.events.map((event) =>
-            event.id === id
-              ? {
-                  ...event,
-                  reminderSent: true,
-                }
-              : event
-          );
-
-        saveToStorage(
-          STORAGE_KEY,
-          updated
-        );
-
-        return {
-          events: updated,
-        };
-      }),
+        set((state) => ({
+          events:
+            state.events.map((event) =>
+              event.id === id
+                ? updatedEvent
+                : event
+            ),
+        }));
+      },
   }));

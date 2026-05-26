@@ -48,6 +48,7 @@ Sistema moderno de gerenciamento de eventos, tarefas e produtividade desenvolvid
     - [✅ Sprint 2C.7 — Toasts + Notificações + Reminder System](#-sprint-2c7--toasts--notificações--reminder-system)
     - [✅ Sprint 2C.7.1 - Toast engine](#-sprint-2c71---toast-engine)
     - [✅ Sprint 2C.7.2 - Reminder engine](#-sprint-2c72---reminder-engine)
+    - [✅ Sprint 2C.7.4 — Persistência Real](#-sprint-2c74--persistência-real)
     - [Próximas Sprints](#próximas-sprints)
   - [👨‍💻 Autor](#-autor)
   - [📄 Licença](#-licença)
@@ -460,6 +461,25 @@ Adicionar:
 - [x] notificações desktop
 - [x] PWA
 - [x] integração mobile
+
+### ✅ Sprint 2C.7.4 — Persistência Real
+
+*Objetivos*
+
+- centralizar persistência
+- evitar duplicação
+- salvar automaticamente
+- preparar hidratação
+
+*Resultado da Sprint*
+
+- [x] persistência desacoplada
+- [x] store limpa
+- [x] arquitetura escalável
+- [x] troca futura para IndexedDB
+- [x] sincronização futura
+- [x] cache offline
+- [x] separação de responsabilidades
 
 ### Próximas Sprints
 
