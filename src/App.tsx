@@ -14,6 +14,7 @@ import AppRoutes from "./routes/AppRoutes";
 import NotificationContainer from "./modules/notifications/components/NotificationContainer";
 import { useReminderWatcher,} from "./modules/events/hooks/useReminderWatcher";
 import { useEventStore } from "./modules/events/store/useEventStore";
+import { useSyncEngine } from "./hooks/useSyncEngine";
 
 export default function App() {
 
@@ -22,6 +23,8 @@ export default function App() {
    */
   useReminderWatcher();
 
+  useSyncEngine();
+  
   const hydrateEvents =
   useEventStore(
     (state) =>

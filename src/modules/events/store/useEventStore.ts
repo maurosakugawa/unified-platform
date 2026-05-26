@@ -11,6 +11,7 @@ import { create } from "zustand";
 
 import type { Event, } from "../types/event.types";
 import { getAllEvents, saveEvent, updateEvent as updateEventDB, deleteEvent as deleteEventDB, } from "../services/eventDb.service";
+import { addToQueue, } from "../../../services/storage/queue.service";
 
 interface EventStore {
   events: Event[];
@@ -55,6 +56,14 @@ export const useEventStore =
     addEvent: async (event) => {
       await saveEvent(event);
 
+      await addToQueue({
+        id: crypto.randomUUID(),
+        action: "create",
+        payload: event,
+        createdAt:
+          new Date().toISOString(),
+      });
+
       set((state) => ({
         events: [
           ...state.events,
@@ -73,6 +82,14 @@ export const useEventStore =
         updatedEvent
       );
 
+      await addToQueue({
+        id: crypto.randomUUID(),
+        action: "update",
+        payload: updatedEvent,
+        createdAt:
+          new Date().toISOString(),
+      });
+
       set((state) => ({
         events:
           state.events.map((event) =>
@@ -88,6 +105,14 @@ export const useEventStore =
      */
     removeEvent: async (id) => {
       await deleteEventDB(id);
+
+      await addToQueue({
+        id: crypto.randomUUID(),
+        action: "delete",
+        payload: { id },
+        createdAt:
+          new Date().toISOString(),
+      });
 
       set((state) => ({
         events:
