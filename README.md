@@ -46,6 +46,7 @@ Sistema moderno de gerenciamento de eventos, tarefas e produtividade desenvolvid
     - [✅ Sprint 2C.5 — Framer Motion + Transições](#-sprint-2c5--framer-motion--transições)
     - [✅ ✅ Sprint 2C.6 — Calendário Visual](#--sprint-2c6--calendário-visual)
     - [✅ Sprint 2C.7 — Toasts + Notificações + Reminder System](#-sprint-2c7--toasts--notificações--reminder-system)
+    - [✅ Sprint 2C.7.1 - Toast engine](#-sprint-2c71---toast-engine)
     - [Próximas Sprints](#próximas-sprints)
   - [👨‍💻 Autor](#-autor)
   - [📄 Licença](#-licença)
@@ -424,9 +425,17 @@ Adicionar:
 - Sistema global de notificações
 - Reminder System
 
+### ✅ Sprint 2C.7.1 - Toast engine
+
 *Resultado da Sprint*
 
-- [x] evento criado
+- [x] ✅ Toast engine 
+- [x] ✅ Zustand notifications 
+- [x] ✅ Framer Motion 
+- [x] ✅ auto-dismiss 
+- [x] ✅ feedback UX moderno 
+- [x] ✅ arquitetura desacoplada 
+- [x] ✅ sistema pronto para reminders automáticos
 
 ### Próximas Sprints
 

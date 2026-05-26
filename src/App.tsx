@@ -9,6 +9,21 @@
  */
 import AppRoutes from "./routes/AppRoutes";
 
+import NotificationContainer from "./modules/notifications/components/NotificationContainer";
+import { useReminderWatcher,} from "./modules/events/hooks/useReminderWatcher";
+
 export default function App() {
-  return <AppRoutes />;
+
+  /**
+   * Inicializa watcher global
+   */
+  useReminderWatcher();
+
+  return (
+    <>
+      <AppRoutes />
+
+      <NotificationContainer />
+    </>
+  );
 }
