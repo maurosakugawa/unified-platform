@@ -26,8 +26,8 @@ interface Props {
 export default function EventList({
   events,
 }: Props) {
-  const removeEvent = useEventStore(
-    (state) => state.removeEvent
+  const deleteEvent = useEventStore(
+    (state) => state.deleteEvent
   );
 
   const container = {
@@ -60,7 +60,7 @@ export default function EventList({
         <EventCard
           key={event.id}
           event={event}
-          onDelete={removeEvent}
+          onDelete={deleteEvent}
         />
       ))}
     </motion.div>

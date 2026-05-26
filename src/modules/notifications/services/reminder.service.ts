@@ -8,24 +8,25 @@
  * @version 1.0.0
  */
 
-import type { Event } from
-  "../../events/types/event.types";
-
-interface ReminderCache {
-  [eventId: string]: boolean;
-}
-
-const triggeredReminders:
-  ReminderCache = {};
+import type {
+  Event,
+} from "../../events/types/event.types";
 
 export function shouldTriggerReminder(
   event: Event
 ) {
-  const now = new Date();
+  /**
+   * Evita duplicação
+   */
+  if (event.reminderSent) {
+    return false;
+  }
 
   const eventDate = new Date(
     `${event.date}T${event.time}`
   );
+
+  const now = new Date();
 
   const diffMs =
     eventDate.getTime() -
@@ -34,28 +35,8 @@ export function shouldTriggerReminder(
   const diffMinutes =
     Math.floor(diffMs / 60000);
 
-  /**
-   * Dispara apenas uma vez
-   */
-  if (
-    triggeredReminders[event.id]
-  ) {
-    return false;
-  }
-
-  /**
-   * Dentro da janela
-   */
-  if (
+  return (
     diffMinutes <= event.reminder &&
     diffMinutes >= 0
-  ) {
-    triggeredReminders[
-      event.id
-    ] = true;
-
-    return true;
-  }
-
-  return false;
+  );
 }

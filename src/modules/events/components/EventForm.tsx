@@ -105,8 +105,7 @@ const handleSubmit = (
     addEvent({
       ...formData,
       id: crypto.randomUUID(),
-      createdAt:
-        new Date().toISOString(),
+      createdAt: new Date().toISOString(),
     });
 
     notifications.success(

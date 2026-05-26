@@ -39,11 +39,12 @@ export interface Event {
   category: EventCategory;
   priority: EventPriority;
 
-  contact: string;
-  location: string;
+  contact?: string;
+
+  location?: string;
 
   reminder: number;
   createdAt: string;
 
-  reminded?: boolean;
+  reminderSent?: boolean;
 }

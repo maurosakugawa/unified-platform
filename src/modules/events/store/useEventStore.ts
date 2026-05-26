@@ -1,5 +1,3 @@
-// src/modules/events/store/useEventStore.ts
-
 /**
  * Zustand store responsável pelo gerenciamento
  * dos eventos da aplicação.
@@ -19,67 +17,144 @@ import type {
 interface EventStore {
   events: Event[];
 
-  addEvent: (event: Event) => void;
+  addEvent: (
+    event: Event
+  ) => void;
 
-  removeEvent: (id: string) => void;
+  updateEvent: (
+    event: Event
+  ) => void;
 
-  updateEvent: (event: Event) => void;
+  deleteEvent: (
+    id: string
+  ) => void;
 
-  markAsReminded: (id: string) => void;
+  markReminderAsSent: (
+    id: string
+  ) => void;
 }
 
-const LOCAL_STORAGE_KEY = "smart-planner-events";
+const LOCAL_STORAGE_KEY =
+  "smart-planner-events";
 
+/**
+ * Carrega eventos do localStorage
+ */
 const loadEvents = (): Event[] => {
-  const stored = localStorage.getItem(LOCAL_STORAGE_KEY);
-  return stored ? JSON.parse(stored) : [];
-}
+  const stored =
+    localStorage.getItem(
+      LOCAL_STORAGE_KEY
+    );
 
-export const useEventStore = create<EventStore>((set) => ({
-  events: loadEvents(),
+  return stored
+    ? JSON.parse(stored).map(
+        (event: Event) => ({
+          reminderSent: false,
+          ...event,
+        })
+      )
+    : [];
+};
 
-  addEvent: (event) =>
-    set((state) => {
-      const updateEvents = [...state.events, event];
+export const useEventStore =
+  create<EventStore>((set) => ({
+    events: loadEvents(),
 
-      localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(updateEvents));
+    /**
+     * Adiciona evento
+     */
+    addEvent: (event) =>
+      set((state) => {
+        const updatedEvents = [
+          ...state.events,
+          {
+            ...event,
+            reminderSent: false,
+          },
+        ];
 
-      return { events: updateEvents };
-    }),
+        localStorage.setItem(
+          LOCAL_STORAGE_KEY,
+          JSON.stringify(updatedEvents)
+        );
 
-  removeEvent: (id) =>
-    set((state) => {
-      const updateEvents = state.events.filter((event) => event.id !== id);
+        return {
+          events: updatedEvents,
+        };
+      }),
 
-      localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(updateEvents));
+    /**
+     * Atualiza evento
+     */
+    updateEvent: (
+      updatedEvent
+    ) =>
+      set((state) => {
+        const updatedEvents =
+          state.events.map(
+            (event) =>
+              event.id ===
+              updatedEvent.id
+                ? updatedEvent
+                : event
+          );
 
-      return { events: updateEvents };
-    }),
+        localStorage.setItem(
+          LOCAL_STORAGE_KEY,
+          JSON.stringify(updatedEvents)
+        );
 
-  updateEvent: (updatedEvent) =>
-    set((state) => {
-      const updatedEvents = state.events.map((event) =>
-        event.id === updatedEvent.id ? updatedEvent : event
-      );
+        return {
+          events: updatedEvents,
+        };
+      }),
 
-      localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(updatedEvents));
+    /**
+     * Remove evento
+     */
+    deleteEvent: (id) =>
+      set((state) => {
+        const updatedEvents =
+          state.events.filter(
+            (event) =>
+              event.id !== id
+          );
 
-      return { events: updatedEvents };
-    }),
+        localStorage.setItem(
+          LOCAL_STORAGE_KEY,
+          JSON.stringify(updatedEvents)
+        );
 
-  markAsReminded: (id) =>
-    set((state) => {
-      const updatedEvents = state.events.map((event) =>
-        event.id === id
-          ? {
-              ...event,
-              reminded: true,
-            }
-          : event
-      );
+        return {
+          events: updatedEvents,
+        };
+      }),
 
-      localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(updatedEvents));
+    /**
+     * Marca reminder como enviado
+     */
+    markReminderAsSent: (
+      id
+    ) =>
+      set((state) => {
+        const updatedEvents =
+          state.events.map(
+            (event) =>
+              event.id === id
+                ? {
+                    ...event,
+                    reminderSent: true,
+                  }
+                : event
+          );
 
-      return { events: updatedEvents };
-    }),
-}));
+        localStorage.setItem(
+          LOCAL_STORAGE_KEY,
+          JSON.stringify(updatedEvents)
+        );
+
+        return {
+          events: updatedEvents,
+        };
+      }),
+  }));

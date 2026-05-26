@@ -7,7 +7,6 @@
  * @license MIT
  * @version 1.0.0
  */
-
 import { useEffect } from "react";
 
 import { useEventStore }
@@ -25,10 +24,11 @@ export function useReminderWatcher() {
     (state) => state.events
   );
 
-  const markAsReminded =
-  useEventStore(
-    (state) => state.markAsReminded
-  );
+  const markReminderAsSent =
+    useEventStore(
+      (state) =>
+        state.markReminderAsSent
+    );
 
   const notifications =
     useNotifications();
@@ -46,9 +46,16 @@ export function useReminderWatcher() {
             "Lembrete de evento",
             `${event.title} começa em ${event.reminder} minutos.`
           );
+
+          /**
+           * Marca como enviado
+           */
+          markReminderAsSent(
+            event.id
+          );
         }
       });
-    }, 10000);
+    }, 30000);
 
     return () =>
       clearInterval(interval);
@@ -56,6 +63,6 @@ export function useReminderWatcher() {
   }, [
     events,
     notifications,
-    markAsReminded,
+    markReminderAsSent,
   ]);
 }

@@ -44,10 +44,10 @@ Sistema moderno de gerenciamento de eventos, tarefas e produtividade desenvolvid
     - [✅ Sprint 2C.3 — Filtros + Ordenação](#-sprint-2c3--filtros--ordenação)
     - [✅ Sprint 2C.4 — Sistema de Temas](#-sprint-2c4--sistema-de-temas)
     - [✅ Sprint 2C.5 — Framer Motion + Transições](#-sprint-2c5--framer-motion--transições)
-    - [✅ ✅ Sprint 2C.6 — Calendário Visual](#--sprint-2c6--calendário-visual)
+    - [✅ Sprint 2C.6 — Calendário Visual](#-sprint-2c6--calendário-visual)
     - [✅ Sprint 2C.7 — Toasts + Notificações + Reminder System](#-sprint-2c7--toasts--notificações--reminder-system)
     - [✅ Sprint 2C.7.1 - Toast engine](#-sprint-2c71---toast-engine)
-    - [✅ 7. Resultado esperado da Sprint 2C.7.2](#-7-resultado-esperado-da-sprint-2c72)
+    - [✅ Sprint 2C.7.2 - Reminder engine](#-sprint-2c72---reminder-engine)
     - [Próximas Sprints](#próximas-sprints)
   - [👨‍💻 Autor](#-autor)
   - [📄 Licença](#-licença)
@@ -386,7 +386,7 @@ Adicionar:
 
 ---
 
-### ✅ ✅ Sprint 2C.6 — Calendário Visual
+### ✅ Sprint 2C.6 — Calendário Visual
 
 *Objetivos*
 
@@ -436,15 +436,15 @@ Adicionar:
 
 *Resultado da Sprint*
 
-- [x] Toast engine 
-- [x] Zustand notifications 
-- [x] Framer Motion 
-- [x] auto-dismiss 
-- [x] feedback UX moderno 
-- [x] arquitetura desacoplada 
+- [x] Toast engine
+- [x] Zustand notifications
+- [x] Framer Motion
+- [x] auto-dismiss
+- [x] feedback UX moderno
+- [x] arquitetura desacoplada
 - [x] sistema pronto para reminders automáticos
   
-### ✅ 7. Resultado esperado da Sprint 2C.7.2
+### ✅ Sprint 2C.7.2 - Reminder engine
 
 *Objetivos*
 
@@ -452,7 +452,7 @@ Adicionar:
 - Notifications
 - UX estilo Google Calendar
 
-Você terá:
+*Resultado da Sprint*
 
 - [x] push notifications
 - [x] service workers
