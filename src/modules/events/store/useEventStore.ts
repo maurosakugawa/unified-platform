@@ -24,6 +24,8 @@ interface EventStore {
   removeEvent: (id: string) => void;
 
   updateEvent: (event: Event) => void;
+
+  markAsReminded: (id: string) => void;
 }
 
 const LOCAL_STORAGE_KEY = "smart-planner-events";
@@ -58,6 +60,22 @@ export const useEventStore = create<EventStore>((set) => ({
     set((state) => {
       const updatedEvents = state.events.map((event) =>
         event.id === updatedEvent.id ? updatedEvent : event
+      );
+
+      localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(updatedEvents));
+
+      return { events: updatedEvents };
+    }),
+
+  markAsReminded: (id) =>
+    set((state) => {
+      const updatedEvents = state.events.map((event) =>
+        event.id === id
+          ? {
+              ...event,
+              reminded: true,
+            }
+          : event
       );
 
       localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(updatedEvents));

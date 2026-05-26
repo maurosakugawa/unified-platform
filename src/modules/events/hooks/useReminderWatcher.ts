@@ -25,6 +25,11 @@ export function useReminderWatcher() {
     (state) => state.events
   );
 
+  const markAsReminded =
+  useEventStore(
+    (state) => state.markAsReminded
+  );
+
   const notifications =
     useNotifications();
 
@@ -43,10 +48,14 @@ export function useReminderWatcher() {
           );
         }
       });
-    }, 30000);
+    }, 10000);
 
     return () =>
       clearInterval(interval);
 
-  }, [events]);
+  }, [
+    events,
+    notifications,
+    markAsReminded,
+  ]);
 }

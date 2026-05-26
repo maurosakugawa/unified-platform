@@ -47,6 +47,7 @@ Sistema moderno de gerenciamento de eventos, tarefas e produtividade desenvolvid
     - [✅ ✅ Sprint 2C.6 — Calendário Visual](#--sprint-2c6--calendário-visual)
     - [✅ Sprint 2C.7 — Toasts + Notificações + Reminder System](#-sprint-2c7--toasts--notificações--reminder-system)
     - [✅ Sprint 2C.7.1 - Toast engine](#-sprint-2c71---toast-engine)
+    - [✅ 7. Resultado esperado da Sprint 2C.7.2](#-7-resultado-esperado-da-sprint-2c72)
     - [Próximas Sprints](#próximas-sprints)
   - [👨‍💻 Autor](#-autor)
   - [📄 Licença](#-licença)
@@ -427,15 +428,38 @@ Adicionar:
 
 ### ✅ Sprint 2C.7.1 - Toast engine
 
+*Objetivos*
+
+- Toast engine
+- Zustand
+- Framer Motion
+
 *Resultado da Sprint*
 
-- [x] ✅ Toast engine 
-- [x] ✅ Zustand notifications 
-- [x] ✅ Framer Motion 
-- [x] ✅ auto-dismiss 
-- [x] ✅ feedback UX moderno 
-- [x] ✅ arquitetura desacoplada 
-- [x] ✅ sistema pronto para reminders automáticos
+- [x] Toast engine 
+- [x] Zustand notifications 
+- [x] Framer Motion 
+- [x] auto-dismiss 
+- [x] feedback UX moderno 
+- [x] arquitetura desacoplada 
+- [x] sistema pronto para reminders automáticos
+  
+### ✅ 7. Resultado esperado da Sprint 2C.7.2
+
+*Objetivos*
+
+- Reminder engine
+- Notifications
+- UX estilo Google Calendar
+
+Você terá:
+
+- [x] push notifications
+- [x] service workers
+- [x] eventos temporizados
+- [x] notificações desktop
+- [x] PWA
+- [x] integração mobile
 
 ### Próximas Sprints
 

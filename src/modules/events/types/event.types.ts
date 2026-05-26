@@ -31,24 +31,19 @@ export type EventCategory =
 
 export interface Event {
   id: string;
-
   title: string;
-
   description: string;
-
   date: string;
-
   time: string;
 
   category: EventCategory;
-
   priority: EventPriority;
 
   contact: string;
-
   location: string;
 
   reminder: number;
-
   createdAt: string;
+
+  reminded?: boolean;
 }

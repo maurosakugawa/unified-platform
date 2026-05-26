@@ -37,12 +37,8 @@ export default function EventSort({
         p-2
       "
     >
-      <option value="created">
-        Mais recentes
-      </option>
-
       <option value="date">
-        Data do evento
+        Mais próximos primeiro
       </option>
 
       <option value="priority">

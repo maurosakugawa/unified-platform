@@ -238,29 +238,61 @@ const handleSubmit = (
           "
         />
 
-        <input
-          type="text"
-          name="location"
-          placeholder="Local"
-          value={formData.location}
-          onChange={handleChange}
-          className="
-            input
-            input-bordered
-          "
-        />
+        <div className="grid md:grid-cols-2 gap-5">
+          <input
+            type="text"
+            name="location"
+            placeholder="Local do evento"
+            value={formData.location}
+            onChange={handleChange}
+            className="
+              input
+              input-bordered
+              w-full
+            "
+          />
 
-        <input
-          type="number"
-          name="reminder"
-          placeholder="Lembrete em minutos"
-          value={formData.reminder}
-          onChange={handleChange}
-          className="
-            input
-            input-bordered
-          "
-        />
+          <div className="flex flex-col gap-2">
+            <label className="text-sm font-medium text-base-content/70">
+              Lembrete
+            </label>
+
+            <select
+              name="reminder"
+              value={formData.reminder}
+              onChange={handleChange}
+              className="
+                select
+                select-bordered
+                w-full
+              "
+            >
+              <option value={5}>
+                5 minutos antes
+              </option>
+
+              <option value={10}>
+                10 minutos antes
+              </option>
+
+              <option value={15}>
+                15 minutos antes
+              </option>
+
+              <option value={30}>
+                30 minutos antes
+              </option>
+
+              <option value={60}>
+                1 hora antes
+              </option>
+
+              <option value={1440}>
+                1 dia antes
+              </option>
+            </select>
+          </div>
+        </div>
       </div>
 
       <div className="flex justify-end gap-3">

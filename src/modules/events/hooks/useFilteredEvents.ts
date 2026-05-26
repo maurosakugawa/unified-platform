@@ -40,6 +40,26 @@ export function useFilteredEvents({
     let filtered = [...events];
 
     /**
+     * Remove eventos passados, mantém os eventos do dia.
+     */
+    const today = new Date();
+
+    today.setHours(0, 0, 0, 0);
+
+    filtered = filtered.filter((event) => {
+      const [year, month, day] =
+        event.date.split("-").map(Number);
+
+      const eventDate = new Date(
+        year,
+        month - 1,
+        day
+      );
+
+      return eventDate >= today;
+    });
+
+    /**
      * Busca textual
      */
     if (search) {
@@ -80,15 +100,6 @@ export function useFilteredEvents({
      * Ordenação
      */
     switch (sortBy) {
-      case "date":
-        filtered.sort((a, b) =>
-          `${a.date} ${a.time}` >
-          `${b.date} ${b.time}`
-            ? 1
-            : -1
-        );
-        break;
-
       case "priority":
         {
           const priorityOrder = {
@@ -111,13 +122,23 @@ export function useFilteredEvents({
         );
         break;
 
-      case "created":
+      case "date":
       default:
-        filtered.sort((a, b) =>
-          b.createdAt.localeCompare(
-            a.createdAt
-          )
-        );
+        filtered.sort((a, b) => {
+          const dateA = new Date(
+            `${a.date}T${a.time}`
+          );
+
+          const dateB = new Date(
+            `${b.date}T${b.time}`
+          );
+
+          return (
+            dateA.getTime() -
+            dateB.getTime()
+          );
+        });
+
         break;
     }
 
