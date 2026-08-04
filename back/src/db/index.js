@@ -9,21 +9,13 @@ const db = new PGlite('./pgdata');
 
 export async function initDatabase() {
   console.log('🗄️  Inicializando banco de dados...');
-
-  // Verificar se tabela users existe (se não, rodar migrations)
-  const result = await db.query(`
-    SELECT name FROM sqlite_master 
-    WHERE type='table' AND name='users'
-  `).catch(() => ({ rows: [] }));
-
-  // PGlite usa SQLite internamente para metadata, mas vamos tentar outra abordagem
-  // Rodar migrations sempre (idempotentes com IF NOT EXISTS)
+  
   const migrations = [
     '001_create_users.sql',
     '002_create_contacts.sql',
     '003_create_events.sql',
   ];
-
+  
   for (const migration of migrations) {
     const path = join(__dirname, 'migrations', migration);
     try {
@@ -35,7 +27,7 @@ export async function initDatabase() {
       throw err;
     }
   }
-
+  
   console.log('✅ Banco pronto!');
 }
 

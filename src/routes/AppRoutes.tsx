@@ -12,6 +12,8 @@ import EventsPage
 import CalendarPage
   from "../modules/calendar/pages/CalendarPage";
 
+import WeatherPage from '../modules/weather/pages/WeatherPage';
+
 function Home() {
   return (
     <div className="p-4">
@@ -41,6 +43,11 @@ export default function AppRoutes() {
       <Route
         path="/calendar"
         element={<CalendarPage />}
+      />
+
+      <Route 
+        path="/weather" 
+        element={<WeatherPage />} 
       />
     </Routes>
   );
