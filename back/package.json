@@ -1,0 +1,26 @@
+{
+  "name": "unified-platform-backend",
+  "version": "1.0.0",
+  "description": "Backend unificado — Auth, Contacts, Events",
+  "main": "src/app.js",
+  "scripts": {
+    "dev": "nodemon src/app.js",
+    "start": "node src/app.js",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "express-session": "^1.17.3",
+    "cors": "^2.8.5",
+    "pglite": "^0.1.0",
+    "bcryptjs": "^2.4.3",
+    "dotenv": "^16.3.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1",
+    "vitest": "^1.0.0",
+    "supertest": "^6.3.3"
+  },
+  "type": "module"
+}
