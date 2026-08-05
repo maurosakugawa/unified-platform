@@ -1,12 +1,7 @@
-// src/components/ui/Modal.tsx
-/**
- * 
- * @author Mauro Sakugawa
- * @created 2026-05-21
- * @license MIT License
- * @version 1.0.0
- */
-import type { ReactNode } from "react";
+import {
+  useEffect,
+  type ReactNode,
+} from "react";
 
 interface ModalProps {
   isOpen: boolean;
@@ -21,72 +16,86 @@ export default function Modal({
   title,
   children,
 }: ModalProps) {
-  if (!isOpen) return null;
+  useEffect(() => {
+    if (!isOpen) {
+      return;
+    }
+
+    const previousOverflow =
+      document.body.style.overflow;
+
+    document.body.style.overflow = "hidden";
+
+    const handleKeyDown = (
+      event: KeyboardEvent
+    ) => {
+      if (event.key === "Escape") {
+        onClose();
+      }
+    };
+
+    window.addEventListener(
+      "keydown",
+      handleKeyDown
+    );
+
+    return () => {
+      document.body.style.overflow =
+        previousOverflow;
+
+      window.removeEventListener(
+        "keydown",
+        handleKeyDown
+      );
+    };
+  }, [isOpen, onClose]);
+
+  if (!isOpen) {
+    return null;
+  }
 
   return (
     <div
-      className="
-        fixed
-        inset-0
-        z-50
-        flex
-        items-center
-        justify-center
-        bg-black/40
-        backdrop-blur-sm
-        p-4
-      "
+      className="fixed inset-0 z-50 overflow-y-auto bg-black/40 p-3 backdrop-blur-sm sm:p-6"
+      role="presentation"
+      onMouseDown={(event) => {
+        if (event.target === event.currentTarget) {
+          onClose();
+        }
+      }}
     >
-      <div
-        className="
-          bg-white
-          rounded-3xl
-          shadow-2xl
-          w-full
-          max-w-2xl
-          animate-in
-          fade-in
-          zoom-in-95
-          duration-200
-        "
-      >
-        <div
-          className="
-            flex
-            items-center
-            justify-between
-            px-6
-            py-5
-            border-b
-            border-slate-100
-          "
+      <div className="flex min-h-full items-start justify-center sm:items-center">
+        <section
+          className="flex max-h-[calc(100dvh-1.5rem)] w-full max-w-2xl flex-col overflow-hidden rounded-3xl bg-base-100 text-base-content shadow-2xl sm:max-h-[calc(100dvh-3rem)]"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="modal-title"
+          onMouseDown={(event) => {
+            event.stopPropagation();
+          }}
         >
-          <h2
-            className="
-              text-xl
-              font-bold
-              text-slate-800
-            "
-          >
-            {title}
-          </h2>
+          <header className="flex shrink-0 items-center justify-between border-b border-base-300 px-5 py-4 sm:px-6 sm:py-5">
+            <h2
+              id="modal-title"
+              className="text-xl font-bold"
+            >
+              {title}
+            </h2>
 
-          <button
-            onClick={onClose}
-            className="
-              btn
-              btn-sm
-              btn-circle
-              btn-ghost
-            "
-          >
-            ✕
-          </button>
-        </div>
+            <button
+              type="button"
+              onClick={onClose}
+              className="btn btn-ghost btn-sm btn-circle"
+              aria-label="Fechar modal"
+            >
+              ✕
+            </button>
+          </header>
 
-        <div className="p-6">
-          {children}
-        </div>
+          <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-5 py-5 pb-10 sm:px-6 sm:py-6 sm:pb-12">
+            {children}
+          </div>
+        </section>
       </div>
     </div>
   );

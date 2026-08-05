@@ -1,20 +1,27 @@
-// src/components/feedback/Loader.tsx
-/**
- * @author Mauro Sakugawa
- * Date: 2026-05-21
- * License: MIT License
- * @version 1.0.0
- */
+interface LoaderProps {
+  label?: string;
+  fullHeight?: boolean;
+}
 
-import React from 'react';
-import { CircularProgress, Box } from '@mui/material'; 
-
-const Loader = () => {
+export default function Loader({
+  label = "Carregando...",
+  fullHeight = false,
+}: LoaderProps) {
   return (
-    <Box display="flex" justifyContent="center" alignItems="center" minHeight="100%">
-      <CircularProgress />
-    </Box>
+    <div
+      className={`flex flex-col items-center justify-center gap-3 ${
+        fullHeight ? "min-h-screen" : "min-h-40"
+      }`}
+      role="status"
+      aria-live="polite"
+    >
+      <span
+        className="loading loading-spinner loading-lg text-primary"
+        aria-hidden="true"
+      />
+      <span className="text-sm text-base-content/60">
+        {label}
+      </span>
+    </div>
   );
-};
-
-export default Loader;
+}

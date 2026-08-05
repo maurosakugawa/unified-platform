@@ -7,6 +7,7 @@ import { requireAuth } from './middleware/requireAuth.js';
 import authRoutes from './routes/auth.js';
 import contactRoutes from './routes/contacts.js';
 import eventRoutes from './routes/events.js';
+import weatherRoutes from './routes/weather.js';
 
 dotenv.config();
 
@@ -41,6 +42,7 @@ app.use('/auth', authRoutes);
 // Rotas protegidas
 app.use('/api/contacts', requireAuth, contactRoutes);
 app.use('/api/events', requireAuth, eventRoutes);
+app.use('/api/weather', requireAuth, weatherRoutes);
 
 // Error handler (sempre por último)
 app.use(errorHandler);

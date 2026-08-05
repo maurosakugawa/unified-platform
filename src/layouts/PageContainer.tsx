@@ -1,14 +1,19 @@
-// src/layouts/PageContainer.tsx
-/**
- * 
- * @author Mauro Sakugawa
- * Date: 2026-05-21
- * License: MIT License
- * @version 1.0.0
- */
-import React from 'react';
-import { Box } from '@mui/material';
+import type { ReactNode } from "react";
 
 interface PageContainerProps {
-  children: React.ReactNode;
+  children: ReactNode;
+  className?: string;
+}
+
+export default function PageContainer({
+  children,
+  className = "",
+}: PageContainerProps) {
+  return (
+    <div
+      className={`container mx-auto w-full px-4 py-6 ${className}`}
+    >
+      {children}
+    </div>
+  );
 }

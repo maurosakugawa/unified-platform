@@ -1,158 +1,192 @@
 /**
- * Zustand store responsável pelo gerenciamento
- * dos eventos da aplicação.
+ * Store de eventos.
  *
- * @author Mauro Sakugawa
- * @created 2026-05-21
- * @license MIT
- * @version 2.0.0
+ * Zustand funciona como cache reativo em memória.
+ * O backend/PGlite é a fonte da verdade.
  */
+
 import { create } from "zustand";
 
-import type { Event, } from "../types/event.types";
-import { getAllEvents, saveEvent, updateEvent as updateEventDB, deleteEvent as deleteEventDB, } from "../services/eventDb.service";
-import { addToQueue, } from "../../../services/storage/queue.service";
+import { eventApiService }
+  from "../services/eventApi.service";
+
+import type { Event }
+  from "../types/event.types";
 
 interface EventStore {
   events: Event[];
+  loading: boolean;
+  loaded: boolean;
+  error: string;
 
   hydrateEvents: () => Promise<void>;
+  fetchEvents: () => Promise<void>;
+  setEvents: (events: Event[]) => void;
 
-  setEvents: ( events: Event[] ) => void;
+  addEvent: (event: Event) => Promise<Event>;
+  updateEvent: (event: Event) => Promise<Event>;
+  removeEvent: (id: string) => Promise<void>;
 
-  addEvent: ( event: Event ) => Promise<void>;
+  markReminderAsSent: (id: string) => Promise<void>;
+  reset: () => void;
+  clearError: () => void;
+}
 
-  updateEvent: ( event: Event ) => Promise<void>;
-
-  removeEvent: ( id: string ) => Promise<void>;
-
-  markReminderAsSent: ( id: string ) => Promise<void>;
-
+function getErrorMessage(error: unknown): string {
+  return error instanceof Error
+    ? error.message
+    : "Não foi possível concluir a operação.";
 }
 
 export const useEventStore =
   create<EventStore>((set, get) => ({
     events: [],
+    loading: false,
+    loaded: false,
+    error: "",
+
+    fetchEvents: async () => {
+      if (get().loading) {
+        return;
+      }
+
+      set({ loading: true, error: "" });
+
+      try {
+        const events =
+          await eventApiService.list();
+
+        set({
+          events,
+          loading: false,
+          loaded: true,
+        });
+      } catch (error) {
+        set({
+          events: [],
+          error: getErrorMessage(error),
+          loading: false,
+          loaded: true,
+        });
+      }
+    },
 
     /**
-     * Carrega eventos do IndexedDB
+     * Nome mantido para não quebrar o App e componentes existentes.
      */
     hydrateEvents: async () => {
-      const events = await getAllEvents();
-
-      set({ events, });
+      await get().fetchEvents();
     },
 
-    /**
-     * Define a lista de eventos (substitui todo o estado)
-     */
     setEvents: (events) => {
-      set({ events });
+      set({
+        events,
+        loaded: true,
+      });
     },
 
-    /**
-     * Adiciona evento
-     */
     addEvent: async (event) => {
-      await saveEvent(event);
+      set({ loading: true, error: "" });
 
-      await addToQueue({
-        id: crypto.randomUUID(),
-        action: "create",
-        payload: event,
-        createdAt:
-          new Date().toISOString(),
-      });
+      try {
+        const created =
+          await eventApiService.create(event);
 
-      set((state) => ({
-        events: [
-          ...state.events,
-          event,
-        ],
-      }));
+        set((state) => ({
+          events: [
+            ...state.events,
+            created,
+          ],
+          loading: false,
+          loaded: true,
+        }));
+
+        return created;
+      } catch (error) {
+        set({
+          error: getErrorMessage(error),
+          loading: false,
+        });
+
+        throw error;
+      }
+    },
+
+    updateEvent: async (event) => {
+      set({ loading: true, error: "" });
+
+      try {
+        const updated =
+          await eventApiService.update(event);
+
+        set((state) => ({
+          events:
+            state.events.map((current) =>
+              current.id === updated.id
+                ? updated
+                : current
+            ),
+          loading: false,
+        }));
+
+        return updated;
+      } catch (error) {
+        set({
+          error: getErrorMessage(error),
+          loading: false,
+        });
+
+        throw error;
+      }
+    },
+
+    removeEvent: async (id) => {
+      set({ loading: true, error: "" });
+
+      try {
+        await eventApiService.remove(id);
+
+        set((state) => ({
+          events:
+            state.events.filter(
+              (event) => event.id !== id
+            ),
+          loading: false,
+        }));
+      } catch (error) {
+        set({
+          error: getErrorMessage(error),
+          loading: false,
+        });
+
+        throw error;
+      }
     },
 
     /**
-     * Atualiza evento
+     * O schema atual não possui reminder_sent. Mantemos essa flag em memória
+     * para preservar o watcher existente sem simular persistência inexistente.
      */
-    updateEvent: async (
-      updatedEvent
-    ) => {
-      await updateEventDB(
-        updatedEvent
-      );
-
-      await addToQueue({
-        id: crypto.randomUUID(),
-        action: "update",
-        payload: updatedEvent,
-        createdAt:
-          new Date().toISOString(),
-      });
-
+    markReminderAsSent: async (id) => {
       set((state) => ({
         events:
           state.events.map((event) =>
-            event.id === updatedEvent.id
-              ? updatedEvent
+            event.id === id
+              ? {
+                  ...event,
+                  reminderSent: true,
+                }
               : event
           ),
       }));
     },
 
-    /**
-     * Remove evento
-     */
-    removeEvent: async (id) => {
-      await deleteEventDB(id);
+    reset: () => set({
+      events: [],
+      loading: false,
+      loaded: false,
+      error: "",
+    }),
 
-      await addToQueue({
-        id: crypto.randomUUID(),
-        action: "delete",
-        payload: { id },
-        createdAt:
-          new Date().toISOString(),
-      });
-
-      set((state) => ({
-        events:
-          state.events.filter(
-            (event) =>
-              event.id !== id
-          ),
-      }));
-    },
-    /**
-     * Marca reminder como enviado
-     */
-    markReminderAsSent:
-      async (id) => {
-        const event =
-          get().events.find(
-            (event) =>
-              event.id === id
-          );
-
-        if (!event) {
-          return;
-        }
-
-        const updatedEvent = {
-          ...event,
-          reminderSent: true,
-        };
-
-        await updateEventDB(
-          updatedEvent
-        );
-
-        set((state) => ({
-          events:
-            state.events.map((event) =>
-              event.id === id
-                ? updatedEvent
-                : event
-            ),
-        }));
-      },
+    clearError: () => set({ error: "" }),
   }));

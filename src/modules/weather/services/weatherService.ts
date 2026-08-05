@@ -1,5 +1,7 @@
-const API_KEY = import.meta.env.VITE_OPENWEATHER_API_KEY;
-const BASE_URL = 'https://api.openweathermap.org/data/2.5';
+const API_URL =
+  import.meta.env
+    .VITE_API_BASE_URL
+  || "http://localhost:3101";
 
 export interface WeatherData {
   city: string;
@@ -9,11 +11,33 @@ export interface WeatherData {
   wind_speed: number;
   description: string;
   icon: string;
-  condition: string; // Clear, Rain, Clouds, Snow, etc.
+  condition: string;
   isDay: boolean;
+
+  /**
+   * Instante do cálculo/observação,
+   * em Unix UTC.
+   */
+  observedAt: number;
+
+  /**
+   * Deslocamento da cidade em relação
+   * ao UTC, em segundos.
+   */
+  timezoneOffset: number;
+
+  /**
+   * Horário local da observação
+   * na cidade, em HH:mm.
+   */
+  observedTime: string;
 }
 
 export interface ForecastItem {
+  /**
+   * Data civil da cidade.
+   * Formato YYYY-MM-DD.
+   */
   date: string;
   temp: number;
   description: string;
@@ -21,67 +45,155 @@ export interface ForecastItem {
   condition: string;
 }
 
-const cityAliases: Record<string, string> = {
-  'moscou': 'Moscow',
-  'genebra': 'Geneva',
-  'londres': 'London',
-  'tóquio': 'Tokyo',
-  'são paulo': 'Sao Paulo',
-  'rio de janeiro': 'Rio de Janeiro',
-};
+export type EventForecastUnavailableReason =
+  | "past"
+  | "outside-window"
+  | "not-found";
 
-function normalizeCity(city: string): string {
-  const lower = city.toLowerCase().trim();
-  return cityAliases[lower] || city;
+export type EventForecastSelection =
+  | "nearest"
+  | "next"
+  | "noon";
+
+export interface EventForecastAvailable {
+  status: "available";
+  city: string;
+  date: string;
+  time: string;
+  temp: number;
+  description: string;
+  icon: string;
+  condition: string;
+  selection:
+    EventForecastSelection;
 }
 
-export async function fetchWeather(city: string): Promise<WeatherData> {
-  const normalizedCity = normalizeCity(city);
-  const url = `${BASE_URL}/weather?q=${encodeURIComponent(normalizedCity)}&appid=${API_KEY}&units=metric&lang=pt`;
-
-  const res = await fetch(url);
-  if (!res.ok) throw new Error('Cidade não encontrada');
-
-  const data = await res.json();
-  const isDay = data.weather[0].icon.endsWith('d');
-
-  return {
-    city: data.name,
-    temp: Math.round(data.main.temp),
-    feels_like: Math.round(data.main.feels_like),
-    humidity: data.main.humidity,
-    wind_speed: data.wind.speed,
-    description: data.weather[0].description,
-    icon: data.weather[0].icon,
-    condition: data.weather[0].main,
-    isDay,
-  };
+export interface EventForecastUnavailable {
+  status: "unavailable";
+  reason:
+    EventForecastUnavailableReason;
 }
 
-export async function fetchForecast(city: string): Promise<ForecastItem[]> {
-  const normalizedCity = normalizeCity(city);
-  const url = `${BASE_URL}/forecast?q=${encodeURIComponent(normalizedCity)}&appid=${API_KEY}&units=metric&lang=pt`;
+export type EventForecastResult =
+  | EventForecastAvailable
+  | EventForecastUnavailable;
 
-  const res = await fetch(url);
-  if (!res.ok) throw new Error('Cidade não encontrada');
+async function fetchFromBackend<T>(
+  path: string
+): Promise<T> {
+  const response =
+    await fetch(
+      `${API_URL}${path}`,
+      {
+        credentials: "include",
+        headers: {
+          Accept:
+            "application/json",
+        },
+      }
+    );
 
-  const data = await res.json();
+  if (response.status === 401) {
+    throw new Error(
+      "Não autenticado"
+    );
+  }
 
-  // Agrupar por dia (API retorna a cada 3h, pegar 1 por dia ao meio-dia)
-  const daily: Record<string, any> = {};
-  data.list.forEach((item: any) => {
-    const date = item.dt_txt.split(' ')[0];
-    const hour = parseInt(item.dt_txt.split(' ')[1].split(':')[0]);
-    if (!daily[date] || Math.abs(hour - 12) < Math.abs(daily[date].hour - 12)) {
-      daily[date] = { ...item, hour };
-    }
-  });
+  if (!response.ok) {
+    const body =
+      await response
+        .json()
+        .catch(() => null);
 
-  return Object.values(daily).slice(0, 5).map((item: any) => ({
-    date: item.dt_txt.split(' ')[0],
-    temp: Math.round(item.main.temp),
-    description: item.weather[0].description,
-    icon: item.weather[0].icon,
-    condition: item.weather[0].main,
-  }));
+    throw new Error(
+      typeof body?.error ===
+      "string"
+        ? body.error
+        : "Erro ao consultar o clima"
+    );
+  }
+
+  return (
+    await response.json()
+  ) as T;
+}
+
+function cityQuery(
+  city: string
+): string {
+  const cleanCity =
+    city.trim();
+
+  if (!cleanCity) {
+    throw new Error(
+      "Informe uma cidade."
+    );
+  }
+
+  return encodeURIComponent(
+    cleanCity
+  );
+}
+
+/**
+ * Clima atual.
+ *
+ * A chave e o cache de 30 minutos ficam
+ * exclusivamente no backend.
+ */
+export function fetchWeather(
+  city: string
+): Promise<WeatherData> {
+  return fetchFromBackend<WeatherData>(
+    `/api/weather/current?city=${cityQuery(
+      city
+    )}`
+  );
+}
+
+/**
+ * Previsão diária próxima de 12h.
+ *
+ * O backend compartilha o cache bruto desta
+ * previsão com os badges dos eventos.
+ */
+export function fetchForecast(
+  city: string
+): Promise<ForecastItem[]> {
+  return fetchFromBackend<
+    ForecastItem[]
+  >(
+    `/api/weather/forecast?city=${cityQuery(
+      city
+    )}`
+  );
+}
+
+/**
+ * Previsão do intervalo de três horas mais
+ * adequado ao horário do evento.
+ */
+export function fetchForecastForEvent(
+  city: string,
+  eventDate: string,
+  eventTime?: string
+): Promise<EventForecastResult> {
+  const params =
+    new URLSearchParams({
+      city: city.trim(),
+      date: eventDate,
+    });
+
+  if (eventTime) {
+    params.set(
+      "time",
+      eventTime
+    );
+  }
+
+  return fetchFromBackend<
+    EventForecastResult
+  >(
+    `/api/weather/event?${params.toString()}`
+  );
 }

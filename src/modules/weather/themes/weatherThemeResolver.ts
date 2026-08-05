@@ -1,22 +1,34 @@
-// src/themes/weatherThemeResolver.ts
+import {
+  getWeatherTheme,
+} from "./weatherTheme";
 
-import { getWeatherTheme } from "./weatherTheme";
-import { weatherIcons } from "./weatherIcons";
-import { weatherAnimations } from "./weatherAnimations";
-import { weatherParticles } from "./weatherParticles";
-import { weatherBackgrounds } from "./weatherBackgrounds";
+import {
+  weatherIcons,
+} from "./weatherIcons";
 
-import type { WeatherType } from "./weather.types";
+import {
+  weatherAnimations,
+} from "./weatherAnimations";
+
+import {
+  weatherParticles,
+} from "./weatherParticles";
+
+import {
+  weatherBackgrounds,
+} from "./weatherBackgrounds";
+
+import type {
+  WeatherType,
+} from "./weather.types";
 
 function normalizeWeather(
   weather?: string
 ): WeatherType {
-
   const normalized =
     weather?.toLowerCase();
 
   switch (normalized) {
-
     case "clear":
     case "clouds":
     case "rain":
@@ -30,21 +42,29 @@ function normalizeWeather(
   }
 }
 
+const weatherConditionNames:
+  Record<WeatherType, string> = {
+    clear: "Clear",
+    clouds: "Clouds",
+    rain: "Rain",
+    drizzle: "Drizzle",
+    thunderstorm: "Thunderstorm",
+    snow: "Snow",
+    default: "Clear",
+  };
+
 export function resolveWeatherTheme(
   weather?: string,
-  isNight?: boolean
+  isNight = false
 ) {
-
   const normalized =
     normalizeWeather(weather);
 
   return {
-
-    theme:
-      getWeatherTheme(
-        normalized,
-        isNight
-      ),
+    theme: getWeatherTheme(
+      weatherConditionNames[normalized],
+      !isNight
+    ),
 
     animation:
       weatherAnimations[normalized],

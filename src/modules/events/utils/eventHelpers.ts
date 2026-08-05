@@ -1,14 +1,19 @@
-// src/modules/events/utils/eventHelpers.ts
+import type {
+  Event,
+} from "../types/event.types";
+
 /**
- * 
- * @author Mauro Sakugawa
- * Date: 2026-05-21
- * License: MIT License
- * @version 1.0.0
+ * O modelo atual não possui duração ou horário final.
+ * Eventos válidos usam duração visual padrão de 60 minutos.
  */
-import { Event } from '../types'
-export function getEventDuration(event: Event): number {
-  const start = new Date(event.startTime).getTime()
-  const end = new Date(event.endTime).getTime()
-  return (end - start) / (1000 * 60) // duration in minutes
+export function getEventDuration(
+  event: Event
+): number {
+  const start = new Date(
+    `${event.date}T${event.time || "00:00"}`
+  );
+
+  return Number.isNaN(start.getTime())
+    ? 0
+    : 60;
 }

@@ -1,26 +1,24 @@
-// src/modules/events/types/event.types.ts
 /**
- * Tipagens do módulo de eventos
- * 
- * @author Mauro Sakugawa
- * @created 2026-05-21
- * @license MIT License
- * @version 1.0.0
+ * Tipagens do módulo de eventos.
+ *
+ * O frontend mantém seus nomes de domínio (date, time, reminder), enquanto
+ * eventApi.service.ts converte esses campos para o contrato do backend.
  */
 
 export const EVENT_PRIORITIES = [
-  'Baixa',
-  'Média',
-  'Alta',
+  "Baixa",
+  "Média",
+  "Alta",
 ] as const;
 
 export const EVENT_CATEGORIES = [
-  'Reunião',
-  'Pessoal',
-  'Trabalho',
-  'Estudo',
-  'Saúde',
-  'Financeiro',
+  "Geral",
+  "Reunião",
+  "Pessoal",
+  "Trabalho",
+  "Estudo",
+  "Saúde",
+  "Financeiro",
 ] as const;
 
 export type EventPriority =
@@ -39,12 +37,24 @@ export interface Event {
   category: EventCategory;
   priority: EventPriority;
 
+  /**
+   * Campo legado mantido temporariamente para compatibilidade com buscas
+   * antigas. Novas associações devem usar contactIds.
+   */
   contact?: string;
 
-  location?: string;
+  location: string;
+  contactIds: number[];
 
   reminder: number;
   createdAt: string;
+  updatedAt?: string;
 
+  /**
+   * Estado somente do cliente nesta fase. O schema atual do backend ainda não
+   * possui reminder_sent.
+   */
   reminderSent?: boolean;
 }
+
+export type EventFormData = Event;

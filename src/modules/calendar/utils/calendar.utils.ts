@@ -1,21 +1,18 @@
-// src/modules/calendar/utils/calendar.utils.ts
-/**
- * 
- * @author Mauro Sakugawa
- * @created 2026-05-25
- * @license MIT
- * @version 1.0.0
- */
-import type { Event } from "../../events/types/event.types";
+import type { Event }
+  from "../../events/types/event.types";
 
-import type { CalendarEvent } from "../types/calendar.types";
+import type { CalendarEvent }
+  from "../types/calendar.types";
 
 export function mapEventsToCalendar(
   events: Event[]
 ): CalendarEvent[] {
   return events.map((event) => {
+    const safeTime =
+      event.time || "00:00";
+
     const start = new Date(
-      `${event.date}T${event.time}`
+      `${event.date}T${safeTime}`
     );
 
     const end = new Date(
