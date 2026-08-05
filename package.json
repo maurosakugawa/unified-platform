@@ -1,11 +1,19 @@
 {
-  "name": "smart-planner",
+  "name": "unified-platform",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc -b && vite build",
+    "dev": "npm run dev:front",
+    "dev:front": "vite",
+    "dev:back": "npm --prefix back run dev",
+    "dev:all": "node scripts/dev-all.mjs",
+    "build": "tsc -b && vite build && node scripts/validate-build.mjs",
+    "build:prod": "npm run build",
+    "test:back": "node scripts/test-backend.mjs",
+    "test:e2e": "npm run build && node scripts/test-e2e.mjs",
+    "test:all": "npm run test:back && npm run test:e2e",
+    "start": "node scripts/start-production.mjs",
     "lint": "eslint .",
     "preview": "vite preview"
   },

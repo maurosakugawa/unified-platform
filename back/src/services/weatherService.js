@@ -1,5 +1,10 @@
+import '../config/env.js';
+
 const OPENWEATHER_BASE_URL =
-  'https://api.openweathermap.org/data/2.5';
+  process.env
+    .OPENWEATHER_BASE_URL
+    ?.trim()
+  || 'https://api.openweathermap.org/data/2.5';
 
 export const WEATHER_CACHE_TTL_MS =
   30 * 60 * 1000;

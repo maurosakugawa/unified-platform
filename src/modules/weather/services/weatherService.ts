@@ -1,7 +1,4 @@
-const API_URL =
-  import.meta.env
-    .VITE_API_BASE_URL
-  || "http://localhost:3101";
+import { apiUrl } from "../../../config/api";
 
 export interface WeatherData {
   city: string;
@@ -83,7 +80,7 @@ async function fetchFromBackend<T>(
 ): Promise<T> {
   const response =
     await fetch(
-      `${API_URL}${path}`,
+      apiUrl(path),
       {
         credentials: "include",
         headers: {

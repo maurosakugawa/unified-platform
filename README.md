@@ -1,503 +1,316 @@
-# Smart Planner
+# Plataforma Unificada
 
-Sistema moderno de gerenciamento de eventos, tarefas e produtividade desenvolvido com React, TypeScript e Vite.
+Aplicação full stack para planejamento pessoal, reunindo autenticação, dashboard, eventos, calendário, contatos e clima em uma única interface.
 
----
+## Funcionalidades
 
-## ✨ Tecnologias
+- autenticação por sessão;
+- dashboard com próximos eventos e clima;
+- CRUD de eventos;
+- calendário mensal;
+- associação de participantes aos eventos;
+- CRUD de contatos;
+- clima atual e previsão de cinco dias;
+- previsão meteorológica associada ao horário do evento;
+- temas claro e escuro;
+- layout responsivo.
 
-![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
-![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)
-![Vite](https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white)
-![TailwindCSS](https://img.shields.io/badge/TailwindCSS-38BDF8?style=for-the-badge&logo=tailwind-css&logoColor=white)
-![DaisyUI](https://img.shields.io/badge/DaisyUI-5A0EF8?style=for-the-badge)
-![FramerMotion](https://img.shields.io/badge/Framer_Motion-black?style=for-the-badge&logo=framer&logoColor=blue)
-![Zustand](https://img.shields.io/badge/Zustand-443E38?style=for-the-badge)
-![React_Router_DOM](https://img.shields.io/badge/React_Router_DOM-CA4245?style=for-the-badge&logo=react-router&logoColor=white)
-![Lucide_Icons](https://img.shields.io/badge/Lucide_Icons-F56565?style=for-the-badge&logo=lucide&logoColor=white)
+## Arquitetura
 
----
-
-## 📚 Sumário
-
-- [Smart Planner](#smart-planner)
-  - [✨ Tecnologias](#-tecnologias)
-  - [📚 Sumário](#-sumário)
-  - [🎨 Funcionalidades](#-funcionalidades)
-    - [✅ Tema Dark/Light](#-tema-darklight)
-    - [✅ Gestão de Eventos](#-gestão-de-eventos)
-    - [✅ Interface Moderna](#-interface-moderna)
-    - [✅ UX](#-ux)
-  - [📁 Estrutura do Projeto](#-estrutura-do-projeto)
-  - [🚀 Instalação](#-instalação)
-  - [🌙 Sistema de Temas](#-sistema-de-temas)
-  - [🎞️ Animações](#️-animações)
-  - [📌 Roadmap](#-roadmap)
-    - [✅ Sprint 1 — Estrutura do módulo Events](#-sprint-1--estrutura-do-módulo-events)
-    - [✅ Sprint 2 — CRUD de Eventos](#-sprint-2--crud-de-eventos)
-    - [✅ Sprint 2.1 — Melhorias de UI](#-sprint-21--melhorias-de-ui)
-    - [✅ Sprint 2A — Base Visual](#-sprint-2a--base-visual)
-    - [✅ Sprint 2B — Página de Eventos](#-sprint-2b--página-de-eventos)
-    - [✅ Sprint 2C — Melhorias Avançadas](#-sprint-2c--melhorias-avançadas)
-    - [✅ Sprint 2C.1 — Persistência + Busca](#-sprint-2c1--persistência--busca)
-    - [✅ Sprint 2C.2 — Modal + Edição](#-sprint-2c2--modal--edição)
-    - [✅ Sprint 2C.3 — Filtros + Ordenação](#-sprint-2c3--filtros--ordenação)
-    - [✅ Sprint 2C.4 — Sistema de Temas](#-sprint-2c4--sistema-de-temas)
-    - [✅ Sprint 2C.5 — Framer Motion + Transições](#-sprint-2c5--framer-motion--transições)
-    - [✅ Sprint 2C.6 — Calendário Visual](#-sprint-2c6--calendário-visual)
-    - [✅ Sprint 2C.7 — Toasts + Notificações + Reminder System](#-sprint-2c7--toasts--notificações--reminder-system)
-    - [✅ Sprint 2C.7.1 - Toast engine](#-sprint-2c71---toast-engine)
-    - [✅ Sprint 2C.7.2 - Reminder engine](#-sprint-2c72---reminder-engine)
-    - [✅ Sprint 2C.7.4 — Persistência Real](#-sprint-2c74--persistência-real)
-    - [Próximas Sprints](#próximas-sprints)
-  - [👨‍💻 Autor](#-autor)
-  - [📄 Licença](#-licença)
-
----
-
-## 🎨 Funcionalidades
-
-### ✅ Tema Dark/Light
-
-- Persistência com localStorage
-- Alternância dinâmica
-- UI responsiva
-
-### ✅ Gestão de Eventos
-
-- Criar eventos
-- Editar eventos
-- Remover eventos
-- Filtrar por categoria
-- Filtrar por prioridade
-- Busca dinâmica
-
-### ✅ Interface Moderna
-
-- Layout dashboard
-- Sidebar responsiva
-- Header dinâmico
-- Glassmorphism
-- Animações suaves
-
-### ✅ UX
-
-- Empty states
-- Hover animations
-- Stagger animations
-- Transições com Framer Motion
-
----
-
-## 📁 Estrutura do Projeto
-
-```bash
-src/
-├── animations/
-├── components/
-│   └── ui/
-├── contexts/
-├── layouts/
-├── modules/
-│   └── events/
-├── routes/
-├── store/
-├── styles/
-└── types/
-````
-
----
-
-## 🚀 Instalação
-
-Clone o projeto:
-
-```bash
-git clone <repo>
+```text
+React + TypeScript + Vite
+          │
+          │ desenvolvimento
+          ▼
+Express :3101
+├── /auth
+├── /api/contacts
+├── /api/events
+├── /api/weather
+└── PGlite
 ```
 
-Entre na pasta:
+Em produção, o Express também serve o build React:
 
-```bash
-cd smart-planner
+```text
+Express
+├── API
+├── arquivos de dist/assets
+└── fallback da SPA para /, /calendar, /events e /weather
 ```
 
-Instale as dependências:
+A chave da OpenWeather permanece exclusivamente no backend. Clima atual e previsão possuem cache compartilhado de 30 minutos por cidade.
+
+## Requisitos
+
+- Node.js 20 ou superior;
+- npm;
+- chave da OpenWeather para consultas reais.
+
+## Instalação
 
 ```bash
-npm install
+git clone git@github.com:maurosakugawa/unified-platform.git
+cd unified-platform
+
+npm ci
+npm --prefix back ci
 ```
 
-Execute o projeto:
+Crie os arquivos locais de ambiente:
 
 ```bash
-npm run dev
+cp .env.example .env
+cp back/.env.example back/.env
 ```
 
----
+Edite `back/.env` e informe pelo menos:
 
-## 🌙 Sistema de Temas
+```env
+SESSION_SECRET=uma-chave-longa-e-aleatoria
+OPENWEATHER_API_KEY=sua-chave-real
+```
 
-O projeto utiliza:
+Os arquivos `.env` e `back/.env` são ignorados pelo Git.
 
-- DaisyUI
-- TailwindCSS
-- CSS Variables
-- data-theme
+## Desenvolvimento
 
-Temas disponíveis:
-
-- light
-- dark
-
----
-
-## 🎞️ Animações
-
-O projeto utiliza Framer Motion para:
-
-- Fade transitions
-- Hover interactions
-- Modal animations
-- Stagger lists
-- Smooth page transitions
-
----
-
-## 📌 Roadmap
-
-### ✅ Sprint 1 — Estrutura do módulo Events
-
-Criação da arquitetura modular inicial:
+Subir frontend e backend juntos:
 
 ```bash
-modules/events/
-├── components/
-├── pages/
-├── services/
-├── store/
-├── types/
-└── utils/
+npm run dev:all
 ```
 
-*Resultado da Sprint*
+Ou em terminais separados:
 
-- [x] Estrutura escalável
-- [x] Organização modular
-- [x] Separação de responsabilidades
-- [x] Base preparada para crescimento
-- [x] Padronização do projeto
+```bash
+npm run dev:front
+npm run dev:back
+```
 
----
+Endereços locais:
 
-### ✅ Sprint 2 — CRUD de Eventos
+```text
+Frontend: http://localhost:3000
+Backend:  http://localhost:3101
+Health:   http://localhost:3101/health
+```
 
-Implementação da lógica principal de gerenciamento de eventos.
+## Build
 
-*Resultado da Sprint*
+```bash
+npm run build
+```
 
-- [x] Cadastro de eventos
-- [x] Edição de eventos
-- [x] Exclusão de eventos
-- [x] Estado global com Zustand
-- [x] Persistência de estado
-- [x] Base pronta para calendário visual
+O comando:
 
----
+1. valida o TypeScript;
+2. gera `dist`;
+3. confirma a existência dos assets;
+4. rejeita `localhost:3101` no bundle de produção;
+5. rejeita chamadas diretas à OpenWeather;
+6. rejeita referências à antiga `VITE_OPENWEATHER_API_KEY`.
 
-### ✅ Sprint 2.1 — Melhorias de UI
+`VITE_API_BASE_URL` fica vazio em `.env.production`, fazendo o frontend usar a mesma origem do backend.
 
-Evolução visual da aplicação.
+## Produção
 
-*Resultado da Sprint*
+Gere o build:
 
-- [x] Container centralizado
-- [x] Grid responsivo
-- [x] Cards reutilizáveis
-- [x] Badges de prioridade
-- [x] Cores por categoria
-- [x] Melhorias de responsividade
+```bash
+npm run build
+```
 
----
+Inicie o Express servindo API e SPA:
 
-### ✅ Sprint 2A — Base Visual
+```bash
+npm start
+```
 
-Criação da fundação visual da aplicação.
+Em produção com HTTPS, configure:
 
-*Componentes criados*
+```env
+NODE_ENV=production
+COOKIE_SECURE=true
+SESSION_SECRET=uma-chave-forte
+OPENWEATHER_API_KEY=sua-chave
+PGDATA_PATH=/caminho/persistente/pgdata
+```
 
-- [x] MainLayout
-- [x] Sidebar
-- [x] Header
-- [x] Card
-- [x] Button
-- [x] Input
+Para testar localmente a execução de produção por HTTP:
 
-*Resultado da Sprint*
+```bash
+COOKIE_SECURE=false npm start
+```
 
-- [x] Layout dashboard
-- [x] Sistema de UI reutilizável
-- [x] Padronização visual
+Abra:
 
----
+```text
+http://localhost:3101
+```
 
-### ✅ Sprint 2B — Página de Eventos
+## Variáveis do frontend
 
-Construção da interface principal de eventos.
+### `.env`
 
-*Funcionalidades*
+Usado durante o desenvolvimento separado:
 
-- [x] Grid de eventos
-- [x] Formulário de criação
-- [x] Listagem dinâmica
-- [x] Cards interativos
-- [x] Empty states
-- [x] Filtros de eventos
+```env
+VITE_API_BASE_URL=http://localhost:3101
+```
 
----
+### `.env.production`
 
-### ✅ Sprint 2C — Melhorias Avançadas
+Mantém a API na mesma origem:
 
-Evolução da experiência do usuário e da arquitetura da aplicação.
+```env
+VITE_API_BASE_URL=
+```
 
----
+## Variáveis do backend
 
-### ✅ Sprint 2C.1 — Persistência + Busca
+```env
+NODE_ENV=development
+PORT=3101
+SESSION_SECRET=troque-esta-chave
+FRONTEND_ORIGIN=http://localhost:3000
+COOKIE_SECURE=false
+TRUST_PROXY=1
+PGDATA_PATH=./pgdata
+OPENWEATHER_API_KEY=sua-chave
+```
 
-*Objetivos*
+`FRONTEND_ORIGIN` aceita valores separados por vírgula. Em produção na mesma origem, pode ficar vazio.
 
-Adicionar:
-
-- Persistência real dos dados
-- Busca instantânea
-- Filtros
-- Dashboard funcional
-- Experiência estilo SaaS moderno
-- Arquitetura escalável
-
-*Resultado da Sprint*
-
-- [x] Persistência com localStorage
-- [x] Busca em tempo real
-- [x] Filtros dinâmicos
-- [x] Melhor organização de estado
-- [x] Estrutura preparada para crescimento
-- [x] UX moderna
-
----
-
-### ✅ Sprint 2C.2 — Modal + Edição
-
-*Objetivos*
-
-Adicionar:
-
-- Modal elegante
-- Edição de eventos
-- Reaproveitamento do formulário
-- UX moderna
-- Preparação para calendário visual
-- Formulário reutilizável
-
-*Resultado da Sprint*
-
-- [x] Modal reutilizável
-- [x] Sistema de edição
-- [x] Form compartilhado
-- [x] Melhor experiência de usuário
-- [x] Estrutura preparada para expansão
-
----
-
-### ✅ Sprint 2C.3 — Filtros + Ordenação
-
-*Objetivos*
-
-Adicionar:
-
-*Filtros*
-
-- Categoria
-- Prioridade
-- Busca textual
-
-*Ordenação*
-
-- Data
-- Prioridade
-- Criação
-- Ordem alfabética
-
-*Resultado da Sprint*
-
-- [x] Busca textual dinâmica
-- [x] Filtro por categoria
-- [x] Filtro por prioridade
-- [x] Ordenação alfabética
-- [x] Ordenação por prioridade
-- [x] Ordenação por data
-- [x] Ordenação por criação
-- [x] Melhor experiência de navegação
-
----
-
-### ✅ Sprint 2C.4 — Sistema de Temas
-
-*Objetivos*
-
-Adicionar:
-
-- Dark Mode
-- Light Mode
-- Theme Switcher
-- Persistência visual
-- UI moderna
-
-*Resultado da Sprint*
-
-- [x] Sistema de temas
-- [x] Persistência com localStorage
-- [x] DaisyUI Themes
-- [x] CSS Variables dinâmicas
-- [x] Layout adaptável
-- [x] UI consistente
-
----
-
-### ✅ Sprint 2C.5 — Framer Motion + Transições
-
-*Objetivos*
-
-Adicionar:
-
-- Framer Motion
-- Animações suaves
-- UX premium
-- Microinterações
-
-*Resultado da Sprint*
-
-- [x] Fade transitions
-- [x] Slide animations
-- [x] Hover interactions
-- [x] Motion cards
-- [x] Stagger animations
-- [x] Modal animations
-- [x] Smooth transitions
-
----
-
-### ✅ Sprint 2C.6 — Calendário Visual
-
-*Objetivos*
-
-Adicionar:
-
-- Estrutura por domínio
-- React Big Calendar
-- Navegação real
-- Base futura pronta
-
-*Resultado da Sprint*
-
-- [x] modules/calendar
-- [x] separação futura preparada
-- [x] arquitetura escalável
-- [x] integração funcionando
-- [x] localizer pt-BR
-- [x] Modal animations
-- [x] mapeamento de eventos
-- [x] rota /calendar
-- [x] sidebar integrada
-- [x] navegação React Router
-- [x] drag and drop (futuro)
-- [x] reminders
-- [x] integração contatos
-- [x] integração clima
-- [x] Google Calendar sync
-- [x] eventos recorrentes
-
----
-
-### ✅ Sprint 2C.7 — Toasts + Notificações + Reminder System
-
-*Objetivos*
-
-- Toasts modernos
-- Sistema global de notificações
-- Reminder System
-
-### ✅ Sprint 2C.7.1 - Toast engine
-
-*Objetivos*
-
-- Toast engine
-- Zustand
-- Framer Motion
-
-*Resultado da Sprint*
-
-- [x] Toast engine
-- [x] Zustand notifications
-- [x] Framer Motion
-- [x] auto-dismiss
-- [x] feedback UX moderno
-- [x] arquitetura desacoplada
-- [x] sistema pronto para reminders automáticos
-  
-### ✅ Sprint 2C.7.2 - Reminder engine
-
-*Objetivos*
-
-- Reminder engine
-- Notifications
-- UX estilo Google Calendar
-
-*Resultado da Sprint*
-
-- [x] push notifications
-- [x] service workers
-- [x] eventos temporizados
-- [x] notificações desktop
-- [x] PWA
-- [x] integração mobile
-
-### ✅ Sprint 2C.7.4 — Persistência Real
-
-*Objetivos*
-
-- centralizar persistência
-- evitar duplicação
-- salvar automaticamente
-- preparar hidratação
-
-*Resultado da Sprint*
-
-- [x] persistência desacoplada
-- [x] store limpa
-- [x] arquitetura escalável
-- [x] troca futura para IndexedDB
-- [x] sincronização futura
-- [x] cache offline
-- [x] separação de responsabilidades
-
-### Próximas Sprints
-
-- [ ] Dashboard analytics
-- [ ] Integração clima
-- [ ] Agenda de contatos
-- [ ] Notificações
-- [ ] Persistência backend
-- [ ] Autenticação
-
----
-
-## 👨‍💻 Autor
+`OPENWEATHER_BASE_URL` existe apenas para testes e integrações. Sem configuração, a API oficial é utilizada.
+
+## Banco PGlite
+
+O banco padrão fica em:
+
+```text
+back/pgdata
+```
+
+Também pode ser direcionado por:
+
+```env
+PGDATA_PATH=/diretorio/persistente/pgdata
+```
+
+Recomendações:
+
+- usar apenas uma instância escrevendo no mesmo diretório;
+- manter o diretório fora de áreas apagadas durante deploy;
+- criar backup periódico;
+- não versionar o banco no Git.
+
+## Testes
+
+Testes unitários e de API do backend, com banco temporário:
+
+```bash
+npm run test:back
+```
+
+Teste E2E completo:
+
+```bash
+npm run test:e2e
+```
+
+O E2E:
+
+- gera e valida o build;
+- inicia o servidor em modo produção;
+- cria um banco PGlite temporário;
+- inicia uma OpenWeather simulada localmente;
+- registra e autentica um usuário;
+- cria contato;
+- cria evento;
+- associa participante;
+- consulta clima;
+- confirma compartilhamento do cache;
+- valida rotas diretas da SPA;
+- valida logout e proteção das APIs;
+- remove todos os dados temporários ao terminar.
+
+Todos os testes:
+
+```bash
+npm run test:all
+```
+
+Nenhum teste E2E utiliza o banco local nem consome a cota real da OpenWeather.
+
+## Comandos
+
+| Comando | Finalidade |
+|---|---|
+| `npm run dev` | Frontend em desenvolvimento |
+| `npm run dev:front` | Apenas Vite |
+| `npm run dev:back` | Apenas Express |
+| `npm run dev:all` | Frontend e backend juntos |
+| `npm run build` | Build e validação |
+| `npm run test:back` | Testes do backend com banco isolado |
+| `npm run test:e2e` | Build e fluxo E2E completo |
+| `npm run test:all` | Backend + E2E |
+| `npm start` | Produção: Express + SPA |
+
+## Estrutura principal
+
+```text
+.
+├── back/
+│   ├── src/
+│   │   ├── config/
+│   │   ├── controllers/
+│   │   ├── db/
+│   │   ├── middleware/
+│   │   ├── routes/
+│   │   └── services/
+│   └── test/
+├── scripts/
+├── src/
+│   ├── components/
+│   ├── config/
+│   ├── layouts/
+│   ├── modules/
+│   │   ├── calendar/
+│   │   ├── contacts/
+│   │   ├── events/
+│   │   └── weather/
+│   ├── pages/
+│   ├── routes/
+│   └── store/
+└── dist/
+```
+
+## Fases concluídas
+
+- Fase 0: estrutura base;
+- Fase 1: backend unificado;
+- Fase 2: módulo de clima;
+- Fase 3: contatos e autenticação;
+- Fase 4: eventos, participantes, clima e dashboard;
+- Fase 5: execução unificada, produção, E2E e documentação.
+
+## Observações para deploy
+
+A aplicação pode ser implantada em qualquer ambiente que mantenha um processo Node.js ativo e um diretório persistente para o PGlite.
+
+A decisão entre HostGator compartilhada, VPS, container ou outro serviço deve considerar:
+
+- suporte a Node.js contínuo;
+- proxy HTTPS;
+- persistência de `PGDATA_PATH`;
+- backup;
+- configuração das variáveis privadas.
+
+## Autor
 
 Mauro Sakugawa
 
----
+## Licença
 
-## 📄 Licença
-
-MIT License
+MIT

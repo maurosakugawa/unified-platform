@@ -1,8 +1,7 @@
 import { create } from "zustand";
 
-const API_URL =
-  import.meta.env.VITE_API_BASE_URL ||
-  "http://localhost:3101";
+import { apiUrl } from "../config/api";
+
 
 interface User {
   id: number;
@@ -46,7 +45,7 @@ export const useAuthStore =
 
       try {
         const response = await fetch(
-          `${API_URL}/auth/me`,
+          apiUrl("/auth/me"),
           { credentials: "include" }
         );
 
@@ -76,7 +75,7 @@ export const useAuthStore =
 
       try {
         const response = await fetch(
-          `${API_URL}/auth/login`,
+          apiUrl("/auth/login"),
           {
             method: "POST",
             credentials: "include",
@@ -126,7 +125,7 @@ export const useAuthStore =
 
       try {
         const response = await fetch(
-          `${API_URL}/auth/register`,
+          apiUrl("/auth/register"),
           {
             method: "POST",
             headers: {
@@ -169,7 +168,7 @@ export const useAuthStore =
     logout: async () => {
       try {
         await fetch(
-          `${API_URL}/auth/logout`,
+          apiUrl("/auth/logout"),
           {
             method: "POST",
             credentials: "include",

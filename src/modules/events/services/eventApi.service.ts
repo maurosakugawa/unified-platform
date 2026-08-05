@@ -1,3 +1,5 @@
+import { apiUrl } from "../../../config/api";
+
 import type { Contact } from "../../contacts/types/contact.types";
 import {
   EVENT_CATEGORIES,
@@ -7,9 +9,6 @@ import {
   type EventPriority,
 } from "../types/event.types";
 
-const API_URL =
-  import.meta.env.VITE_API_BASE_URL ||
-  "http://localhost:3101";
 
 interface ApiEvent {
   id: number | string;
@@ -53,7 +52,7 @@ async function requestJson<T>(
   path: string,
   options: RequestInit = {}
 ): Promise<T> {
-  const response = await fetch(`${API_URL}${path}`, {
+  const response = await fetch(apiUrl(path), {
     ...options,
     credentials: "include",
     headers: {

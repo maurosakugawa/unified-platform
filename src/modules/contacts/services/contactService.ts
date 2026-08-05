@@ -1,9 +1,10 @@
+import { apiUrl } from "../../../config/api";
+
 import type { Contact, ContactInput } from '../types/contact.types';
 
-const API_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3101';
 
 async function fetchWithAuth(url: string, options: RequestInit = {}) {
-  const res = await fetch(`${API_URL}${url}`, {
+  const res = await fetch(apiUrl(url), {
     ...options,
     credentials: 'include',
     headers: {
